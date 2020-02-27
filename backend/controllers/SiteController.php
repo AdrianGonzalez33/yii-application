@@ -8,8 +8,7 @@ use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use app\models\Articulo;
-use app\models\FormArticulo;
+use common\models\Articulo;
 use yii\widgets\ActiveForm;
 use yii\web\Response;
 use yii\helpers\Html;
@@ -46,21 +45,22 @@ class SiteController extends Controller{
     }
 
     public function actionBlog(){ // Crear artículo AJAX/JSON
-        $model = new FormArticulo();
+        $model = new Articulo();
+        $model->autor = 'Pepe';
+
         $msg = null;
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($model);
-        }
-        if ($model->load(Yii::$app->request->post())){
+
+        if ( $model->load(Yii::$app->request->post() ) ){
             if ($model->validate()){
-                $msg = "Formulario enviado correctamente";
-                $model->titulo = null;
-                $model->contenido = null;
+
+                $model->save();
+                $model = new Articulo();
+
             }else{
                 $model->getErrors();
             }
         }
+
         return $this->render("blog", ['model' => $model, 'msg' => $msg]);
     }
 
