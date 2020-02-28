@@ -1,15 +1,14 @@
 <?php
 namespace backend\controllers;
 
+use yii\data\ActiveDataProvider;
 use common\models\LoginForm;
 use common\models\User;
-use phpDocumentor\Reflection\Types\This;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\Articulo;
-use yii\widgets\ActiveForm;
 use yii\web\Response;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -20,6 +19,10 @@ use yii\helpers\Url;
  * Site controller
  */
 class SiteController extends Controller{
+    public function actionMensaje(){
+        $mensaje= "llega";
+        return $this->render("index", ['mensaje'=>$mensaje]);
+    }
     /**
      * Displays listaArticulos.
      *
@@ -29,9 +32,6 @@ class SiteController extends Controller{
         $table = new Articulo();
         $model = $table->find()->all();
         return $this->render("index", ["model" => $model]);
-    }
-    public function actionHola(){
-        return $this->render('lista');
     }
     /**
      * Displays listaUsuarios.
@@ -43,8 +43,12 @@ class SiteController extends Controller{
         $model = $table->find()->all();
         return $this->render("usuarios", ["model" => $model]);
     }
-
-    public function actionBlog(){ // Crear artículo AJAX/JSON
+    /**
+     * Create Articulo.
+     *
+     * @return string
+     */
+    public function actionBlog(){
         $model = new Articulo();
         $msg = null;
 
@@ -61,19 +65,19 @@ class SiteController extends Controller{
 
         return $this->render("blog", ['model' => $model, 'msg' => $msg]);
     }
-    public function actionEdit(){
-        $model= Yii::$app->request;
-        if ( $model->load(Yii::$app->request->post() ) ){
-            if ($model->validate()){
-                $msg= "Editando artículo.";
 
-            }else{
-                $model->getErrors();
-            }
+    public function actionEdit($id_articulo = false){
+        if ( $id_articulo ) {
+            $model = Articulo::findOne( [ 'id_articulo' => $id_articulo ] );
+        } else {
+            $model = new Articulo();
         }
-        return $this->render("edit", ['model' => $model, 'msg' => $msg]);
-
+        if (isset($_POST['modificar'])) {
+            $model->update();
+        }
+        return $this->render("edit", ['model' => $model]);
     }
+
 
     public function actionDelete(){ //borrar articulos
         if(Yii::$app->request->post()){

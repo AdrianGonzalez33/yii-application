@@ -2,59 +2,28 @@
 
 namespace common\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use yii\db\ActiveRecord;
+use common\models\Articulo;
 
 /**
- * This is the model class for table "articulo".
- *
- * @property int $id_articulo
- * @property string $titulo
- * @property string $contenido
- * @property string $autor
+ * ArticuloSearch represents the model behind the search form of `\common\models\Articulo`.
  */
-class Articulo extends ActiveRecord{
+class ArticuloSearch extends Articulo {
     /**
      * {@inheritdoc}
      */
-    public static function tableName(){
-        return 'articulo';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules(){
+    public function rules()
+    {
         return [
-            [['titulo', 'contenido', 'autor'], 'required'],
-            [['titulo', 'autor'], 'string', 'max' => 50],
-            [['contenido'], 'string', 'max' => 250],
-
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function attributeLabels(){
-        return [
-            'id_articulo' => 'Id Articulo',
-            'titulo' => 'Titulo',
-            'contenido' => 'Contenido',
-            'autor' => 'Autor',
             [['id_articulo'], 'integer'],
             [['titulo', 'contenido', 'autor'], 'safe'],
         ];
     }
+
     /**
      * {@inheritdoc}
      */
-    public function getId(){
-        return $this->getPrimaryKey();
-    }
-
     public function scenarios(){
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();

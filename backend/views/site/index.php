@@ -10,6 +10,12 @@ use yii\widgets\LinkPager;
 $this->title = 'Lista de usuarios';
 ?>
 
+<?php $f = ActiveForm::begin([
+    "method" => "get",
+    "action" => Url::toRoute("site/index"),
+    "enableClientValidation" => true,
+]);
+?>
 <div class="site-index">
     <h3>Lista de Artículos</h3>
     <table class="table table-bordered">
@@ -27,7 +33,7 @@ $this->title = 'Lista de usuarios';
                 <td><?= $row->titulo ?></td>
                 <td><?= $row->contenido ?></td>
                 <td><?= $row->autor ?></td>
-                <td><a href=http://backend.local:8080/index.php?r=site%2Fblog>Editar</a></td>
+                <td><a href="<?= Url::toRoute(["site/edit", "id_articulo" => $row->id_articulo]) ?>">Editar</a></td>
                 <td><a href="#" data-toggle="modal" data-target="#id_articulo<?= $row->id_articulo ?>">Eliminar</a>
                     <div class="modal fade" role="dialog" aria-hidden="true" id="id_articulo<?= $row->id_articulo ?>">
                         <div class="modal-dialog">
@@ -54,3 +60,26 @@ $this->title = 'Lista de usuarios';
         <?php endforeach ?>
     </table>
 </div>
+
+<?php/*
+if (isset($_POST['action'])) {
+    switch ($_POST['action']) {
+        case 'insert':
+            insert();
+            break;
+        case 'select':
+            select();
+            break;
+    }
+}
+
+function select() {
+    echo "The select function is called.";
+    exit;
+}
+
+function insert() {
+    echo "The insert function is called.";
+    exit;
+}*/
+?>
