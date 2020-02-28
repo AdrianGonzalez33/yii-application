@@ -46,13 +46,11 @@ class SiteController extends Controller{
 
     public function actionBlog(){ // Crear artículo AJAX/JSON
         $model = new Articulo();
-        $model->autor = 'Pepe';
-
         $msg = null;
 
         if ( $model->load(Yii::$app->request->post() ) ){
             if ($model->validate()){
-
+                $msg= "Registro con éxito.";
                 $model->save();
                 $model = new Articulo();
 
@@ -62,6 +60,19 @@ class SiteController extends Controller{
         }
 
         return $this->render("blog", ['model' => $model, 'msg' => $msg]);
+    }
+    public function actionEdit(){
+        $model= Yii::$app->request;
+        if ( $model->load(Yii::$app->request->post() ) ){
+            if ($model->validate()){
+                $msg= "Editando artículo.";
+
+            }else{
+                $model->getErrors();
+            }
+        }
+        return $this->render("edit", ['model' => $model, 'msg' => $msg]);
+
     }
 
     public function actionDelete(){ //borrar articulos
