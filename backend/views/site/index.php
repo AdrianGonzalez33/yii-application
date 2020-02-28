@@ -17,6 +17,7 @@ $this->title = 'Lista de usuarios';
             <th>Id Articulo</th>
             <th>titulo</th>
             <th>contenido</th>
+            <th>autor</th>
             <th></th>
             <th></th>
         </tr>
@@ -25,7 +26,8 @@ $this->title = 'Lista de usuarios';
                 <td><?= $row->id_articulo ?></td>
                 <td><?= $row->titulo ?></td>
                 <td><?= $row->contenido ?></td>
-                <td><a href="#">Editar</a></td>
+                <td><?= $row->autor ?></td>
+                <td><a href=http://backend.local:8080/index.php?r=site%2Fblog>Editar</a></td>
                 <td><a href="#" data-toggle="modal" data-target="#id_articulo<?= $row->id_articulo ?>">Eliminar</a>
                     <div class="modal fade" role="dialog" aria-hidden="true" id="id_articulo<?= $row->id_articulo ?>">
                         <div class="modal-dialog">

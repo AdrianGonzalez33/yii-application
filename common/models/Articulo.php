@@ -31,6 +31,7 @@ class Articulo extends \yii\db\ActiveRecord
             [['titulo', 'contenido', 'autor'], 'required'],
             [['titulo', 'autor'], 'string', 'max' => 50],
             [['contenido'], 'string', 'max' => 250],
+
         ];
     }
 
