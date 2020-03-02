@@ -14,6 +14,7 @@ use yii\db\ActiveRecord;
  * @property string $titulo
  * @property string $contenido
  * @property string $autor
+ * @property string $imagen
  */
 class Articulo extends ActiveRecord{
     /**
@@ -30,7 +31,7 @@ class Articulo extends ActiveRecord{
         return [
             [['titulo', 'contenido', 'autor'], 'required'],
             [['titulo', 'autor'], 'string', 'max' => 50],
-            [['contenido'], 'string', 'max' => 250],
+            [['contenido','imagen'], 'string', 'max' => 250],
 
         ];
     }
@@ -44,8 +45,9 @@ class Articulo extends ActiveRecord{
             'titulo' => 'Titulo',
             'contenido' => 'Contenido',
             'autor' => 'Autor',
+            'imagen'=> 'Imagen',
             [['id_articulo'], 'integer'],
-            [['titulo', 'contenido', 'autor'], 'safe'],
+            [['titulo', 'contenido', 'autor', 'imagen'], 'safe'],
         ];
     }
     /**
@@ -90,7 +92,8 @@ class Articulo extends ActiveRecord{
 
         $query->andFilterWhere(['like', 'titulo', $this->titulo])
             ->andFilterWhere(['like', 'contenido', $this->contenido])
-            ->andFilterWhere(['like', 'autor', $this->autor]);
+            ->andFilterWhere(['like', 'autor', $this->autor])
+            ->andFilterWhere(['like', 'imagen', $this->imagen]);
 
         return $dataProvider;
     }

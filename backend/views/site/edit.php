@@ -22,9 +22,11 @@ $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity-
 
     <div class="form-group"> <?= $form->field($model, "autor")->dropDownList($varAutor, ['prompt' => 'Seleccione Uno' ]); ?></div>
 
+    <div class="form-group"><?= $form->field($model, "imagen")->input("text") ?></div>
+
     <div><input type="submit" value="Modificar" class="btn btn-primary" >
 
-    <input type="reset" value="Cancelar" class="btn btn-primary" onClick="window.location = 'http://127.0.0.3/index.php?r=site%2Farticulos'" /></div>
+    <input type="reset" value="Cancelar" class="btn btn-primary" onClick="window.location = 'http://backend.local:8080/index.php?r=site%2Farticulos'" /></div>
 
 <?php $form->end() ?>
 

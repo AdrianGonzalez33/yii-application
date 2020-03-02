@@ -19,6 +19,12 @@ use yii\helpers\Url;
  * Site controller
  */
 class SiteController extends Controller{
+
+    public function actionIndex(){ // carga a vista tabla articulos
+        $table = new Articulo();
+        $model = $table->find()->all();
+        return $this->render("index", ["model" => $model]);
+    }
     /**
      * Displays listaArticulos.
      *
@@ -60,11 +66,6 @@ class SiteController extends Controller{
 
         return $this->render("blog", ['model' => $model, 'msg' => $msg]);
     }
-
-    public function actionIndex(){
-        return $this->render("index");
-    }
-
 
     public function actionEdit($id_articulo = false){
         $msg =null;
