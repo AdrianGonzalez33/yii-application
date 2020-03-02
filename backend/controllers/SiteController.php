@@ -19,19 +19,15 @@ use yii\helpers\Url;
  * Site controller
  */
 class SiteController extends Controller{
-    public function actionMensaje(){
-        $mensaje= "llega";
-        return $this->render("index", ['mensaje'=>$mensaje]);
-    }
     /**
      * Displays listaArticulos.
      *
      * @return string
      */
-    public function actionIndex(){ // carga a vista tabla articulos
+    public function actionArticulos(){ // carga a vista tabla articulos
         $table = new Articulo();
         $model = $table->find()->all();
-        return $this->render("index", ["model" => $model]);
+        return $this->render("articulos", ["model" => $model]);
     }
     /**
      * Displays listaUsuarios.
@@ -51,12 +47,11 @@ class SiteController extends Controller{
     public function actionBlog(){
         $model = new Articulo();
         $msg = null;
-
         if ( $model->load(Yii::$app->request->post() ) ){
             if ($model->validate()){
-                $msg= "Registro con éxito.";
                 $model->save();
-                $model = new Articulo();
+                $model = $model->find()->all();
+                return $this->render("articulos", ["model" => $model]);
 
             }else{
                 $model->getErrors();
@@ -66,16 +61,33 @@ class SiteController extends Controller{
         return $this->render("blog", ['model' => $model, 'msg' => $msg]);
     }
 
+    public function actionIndex(){
+        return $this->render("index");
+    }
+
+
     public function actionEdit($id_articulo = false){
+        $msg =null;
         if ( $id_articulo ) {
             $model = Articulo::findOne( [ 'id_articulo' => $id_articulo ] );
         } else {
             $model = new Articulo();
         }
-        if (isset($_POST['modificar'])) {
-            $model->update();
+        if($model->load(Yii::$app->request->post())){
+            if($model->validate()){
+                $model->update();
+                $model = $model->find()->all();
+                return $this->render("articulos", ["model" => $model]);
+
+            }else{
+                $model->getErrors();
+            }
         }
-        return $this->render("edit", ['model' => $model]);
+        /*if (isset($_POST['modificar'])) {
+            $model->update();
+        }*/
+
+        return $this->render("edit", ['model' => $model, "msg"=>$msg]);
     }
 
 
@@ -85,49 +97,49 @@ class SiteController extends Controller{
             if((int) $id_articulo){
                 if(Articulo::deleteAll("id_articulo=:id_articulo", [":id_articulo" => $id_articulo])){
                     echo "El articulo id $id_articulo eliminado con éxito, redireccionando ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/index")."'>";
+                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/articulos")."'>";
                 }else{
                     echo "Ha ocurrido un error al eliminar el articulo, redireccionando ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/index")."'>";
+                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/articulos")."'>";
                 }
             }
             else{
                 echo "Ha ocurrido un error al eliminar el articulo, redireccionando ...";
-                echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/index")."'>";
+                echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/articulos")."'>";
             }
         }else{
-            return $this->redirect(["site/index"]);
+            return $this->redirect(["site/articulos"]);
         }
     }
 
-   public function behaviors() {
-       return [
-           'access' => [
-               'class' => AccessControl::className(),
-               'rules' => [
-                   [
-                       'actions' => ['login', 'error',], //solo permitidos sin logear
-                       'allow' => true,
-                   ],
-                   [
-                       'actions' => ['logout', 'index','blog', 'usuarios'], //permitidos logeados
-                       'allow' => true,
-                       'roles' => ['@'],
-                   ],
-                   [
-                       'allow' => true,
-                       'roles' => ['@'],
-                   ],
-               ],
-           ],
-           'verbs' => [
-               'class' => VerbFilter::className(),
-               'actions' => [
-                   'logout' => ['post'],
-               ],
-           ],
-       ];
-   }
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['login', 'error',], //solo permitidos sin logear
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['logout', 'articulos','blog', 'usuarios', 'index'], //permitidos logeados
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -170,3 +182,4 @@ class SiteController extends Controller{
         return $this->goHome();
     }
 }
+

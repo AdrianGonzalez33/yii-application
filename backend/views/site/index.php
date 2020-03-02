@@ -1,85 +1,53 @@
 <?php
 
 /* @var $this yii\web\View */
-use yii\helpers\Url;
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use yii\data\Pagination;
-use yii\widgets\LinkPager;
 
-$this->title = 'Lista de usuarios';
-?>
-
-<?php $f = ActiveForm::begin([
-    "method" => "get",
-    "action" => Url::toRoute("site/index"),
-    "enableClientValidation" => true,
-]);
+$this->title = 'My Yii Application';
 ?>
 <div class="site-index">
-    <h3>Lista de Artículos</h3>
-    <table class="table table-bordered">
-        <tr>
-            <th>Id Articulo</th>
-            <th>titulo</th>
-            <th>contenido</th>
-            <th>autor</th>
-            <th></th>
-            <th></th>
-        </tr>
-        <?php foreach($model as $row): ?>
-            <tr>
-                <td><?= $row->id_articulo ?></td>
-                <td><?= $row->titulo ?></td>
-                <td><?= $row->contenido ?></td>
-                <td><?= $row->autor ?></td>
-                <td><a href="<?= Url::toRoute(["site/edit", "id_articulo" => $row->id_articulo]) ?>">Editar</a></td>
-                <td><a href="#" data-toggle="modal" data-target="#id_articulo<?= $row->id_articulo ?>">Eliminar</a>
-                    <div class="modal fade" role="dialog" aria-hidden="true" id="id_articulo<?= $row->id_articulo ?>">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                    <h4 class="modal-title">Eliminar articulo</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <p>¿Realmente deseas eliminar al articulo con id <?= $row->id_articulo ?>?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <?= Html::beginForm(Url::toRoute("site/delete"), "POST") ?>
-                                    <input type="hidden" name="id_articulo" value="<?= $row->id_articulo ?>">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-primary">Eliminar</button>
-                                    <?= Html::endForm() ?>
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-                </td>
-            </tr>
-        <?php endforeach ?>
-    </table>
+
+    <div class="jumbotron">
+        <h1>Bienvenido!</h1>
+
+        <p class="lead">Plantilla creada con éxito.</p>
+
+        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Enlace a yii</a></p>
+    </div>
+
+    <div class="body-content">
+
+        <div class="row">
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
+            </div>
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+            </div>
+            <div class="col-lg-4">
+                <h2>Heading</h2>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur.</p>
+
+                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+            </div>
+        </div>
+
+    </div>
 </div>
-
-<?php/*
-if (isset($_POST['action'])) {
-    switch ($_POST['action']) {
-        case 'insert':
-            insert();
-            break;
-        case 'select':
-            select();
-            break;
-    }
-}
-
-function select() {
-    echo "The select function is called.";
-    exit;
-}
-
-function insert() {
-    echo "The insert function is called.";
-    exit;
-}*/
-?>
