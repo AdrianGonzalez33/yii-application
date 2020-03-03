@@ -11,15 +11,16 @@ $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity-
 <?php $form = ActiveForm::begin([
     "method" => "post",
     'enableClientValidation' => true,
+    "options" => ["enctype" => "multipart/form-data"],
 ]);
 ?>
-    <div class="form-group"><?= $form->field($model, "titulo")->input("text") ?></div>
+    <div class="form-group"><?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?></div>
 
     <div class="form-group"><?= $form->field($model, "contenido")->input("text") ?></div>
 
-    <div class="form-group"> <?= $form->field($model, "autor")->dropDownList($varAutor, ['prompt' => 'Seleccione Uno' ]); ?></div>
+    <div class="form-group"><?= $form->field($model, "autor")->dropDownList($varAutor, ['prompt' => 'Seleccione Uno' ]); ?></div>
 
-    <div class="form-group"><?= $form->field($model, "imagen")->input("text") ?></div>
+    <div class="form-group"><?= $form->field($model, "imagen")->fileInput() ?></div>
 
     <div><input type="submit" value="Crear" class="btn btn-primary" >
 

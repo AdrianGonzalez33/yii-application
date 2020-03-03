@@ -1,7 +1,6 @@
 <?php
 namespace backend\controllers;
 
-use yii\data\ActiveDataProvider;
 use common\models\LoginForm;
 use common\models\User;
 use Yii;
@@ -9,18 +8,21 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\Articulo;
-use yii\web\Response;
 use yii\helpers\Html;
-use yii\helpers\Url;
-
+use app\models\FormUpload;
+use yii\web\UploadedFile;
 
 
 /**
  * Site controller
  */
 class SiteController extends Controller{
-
-    public function actionIndex(){ // carga a vista tabla articulos
+    /**
+     * Displays blog.
+     *
+     * @return string
+     */
+    public function actionIndex(){ // carga articulos al blog
         $table = new Articulo();
         $model = $table->find()->all();
         return $this->render("index", ["model" => $model]);
@@ -56,6 +58,9 @@ class SiteController extends Controller{
         if ( $model->load(Yii::$app->request->post() ) ){
             if ($model->validate()){
                 $model->save();
+                //$imagen = UploadedFile::getInstance($model,"imagen");
+                /*$imagenName = 'stu_'.$model->id_articulo.'.'.$imagen->getExtension();
+                $imagen->saveAs(''.$imagenName);*/
                 $model = $model->find()->all();
                 return $this->render("articulos", ["model" => $model]);
 
@@ -84,29 +89,16 @@ class SiteController extends Controller{
                 $model->getErrors();
             }
         }
-        /*if (isset($_POST['modificar'])) {
-            $model->update();
-        }*/
-
         return $this->render("edit", ['model' => $model, "msg"=>$msg]);
     }
-
 
     public function actionDelete(){ //borrar articulos
         if(Yii::$app->request->post()){
             $id_articulo = Html::encode($_POST["id_articulo"]);
-            if((int) $id_articulo){
-                if(Articulo::deleteAll("id_articulo=:id_articulo", [":id_articulo" => $id_articulo])){
-                    echo "El articulo id $id_articulo eliminado con éxito, redireccionando ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/articulos")."'>";
-                }else{
-                    echo "Ha ocurrido un error al eliminar el articulo, redireccionando ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/articulos")."'>";
-                }
-            }
-            else{
-                echo "Ha ocurrido un error al eliminar el articulo, redireccionando ...";
-                echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("site/articulos")."'>";
+            if((int) $id_articulo) {
+                $this->findModel($id_articulo)->delete();
+                //Articulo::deleteAll("id_articulo=:id_articulo", [":id_articulo" => $id_articulo]);
+                return $this->redirect(["site/articulos"]);
             }
         }else{
             return $this->redirect(["site/articulos"]);
@@ -123,7 +115,7 @@ class SiteController extends Controller{
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'articulos','blog', 'usuarios', 'index'], //permitidos logeados
+                        'actions' => ['logout', 'articulos','blog', 'usuarios', 'index', 'upload'], //permitidos logeados
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -172,6 +164,19 @@ class SiteController extends Controller{
                 'model' => $model,
             ]);
         }
+    }
+    /**
+     * Logout action.
+     * @param integer $id
+     * @return Articulo the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     * @return string
+     */
+    protected function findModel($id)    {
+        if (($model = Articulo::findOne($id)) !== null){
+            return $model;
+        }
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
     /**
      * Logout action.
