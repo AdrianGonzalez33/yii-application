@@ -15,8 +15,12 @@ use yii\db\ActiveRecord;
  * @property string $contenido
  * @property string $autor
  * @property string $imagen
+ * @property string $categoria
+ * @property int $creado
+ * @property int $modificado
  */
 class Articulo extends ActiveRecord{
+    public $file;
     /**
      * {@inheritdoc}
      */
@@ -29,13 +33,16 @@ class Articulo extends ActiveRecord{
      */
     public function rules(){
         return [
-            [['titulo', 'contenido', 'autor'], 'required'],
-            [['titulo', 'autor'], 'string', 'max' => 50],
-            [['contenido','imagen'], 'string', 'max' => 250],
+            [['titulo', 'contenido', 'autor', 'imagen', 'categoria'], 'required'],
+            [['id_articulo','creado', 'modificado'], 'integer'],
+            [['titulo', 'autor', 'categoria'], 'string', 'max' => 50],
+            [['imagen'], 'string', 'max' => 250],
+            [['contenido'], 'string'],
+            [['file'], 'file'],
+            [['titulo', 'contenido', 'autor', 'imagen', 'categoria'], 'safe'],
 
         ];
     }
-
     /**
      * {@inheritdoc}
      */
@@ -45,9 +52,10 @@ class Articulo extends ActiveRecord{
             'titulo' => 'Titulo',
             'contenido' => 'Contenido',
             'autor' => 'Autor',
-            'imagen'=> 'Imagen',
-            [['id_articulo'], 'integer'],
-            [['titulo', 'contenido', 'autor', 'imagen'], 'safe'],
+            'file'=> 'Imagen',
+            'categoria' => 'Categoria',
+            'creado' => 'Creado',
+            'modificado' => 'Modificado',
         ];
     }
     /**
@@ -90,10 +98,14 @@ class Articulo extends ActiveRecord{
             'id_articulo' => $this->id_articulo,
         ]);
 
+
         $query->andFilterWhere(['like', 'titulo', $this->titulo])
             ->andFilterWhere(['like', 'contenido', $this->contenido])
             ->andFilterWhere(['like', 'autor', $this->autor])
-            ->andFilterWhere(['like', 'imagen', $this->imagen]);
+            ->andFilterWhere(['like', 'imagen', $this->imagen])
+            ->andFilterWhere(['like', 'categoria', $this->categoria])
+            ->andFilterWhere(['like', 'creado', $this->creado])
+            ->andFilterWhere(['like', 'modificado', $this->modificado]);
 
         return $dataProvider;
     }

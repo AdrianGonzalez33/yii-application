@@ -1,8 +1,14 @@
 <?php
 
+use yii\db\Query;
+
 /* @var $this yii\web\View */
 
-$this->title = 'Blog Home';
+$query = new Query;
+// compose the query
+$query->select('categoria')->distinct()->from('articulo');
+
+$this->title = 'Blog';
 ?>
 
 <!DOCTYPE html>
@@ -15,8 +21,6 @@ $this->title = 'Blog Home';
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Blog Home</title>
-
   <!-- Bootstrap core CSS -->
   <link href="../../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -26,34 +30,6 @@ $this->title = 'Blog Home';
 </head>
 
 <body>
-
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Start Bootstrap</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
 
   <!-- Page Content -->
   <div class="container">
@@ -78,8 +54,7 @@ $this->title = 'Blog Home';
             <a href="#" class="btn btn-primary">Read More &rarr;</a>
           </div>
           <div class="card-footer text-muted">
-            Posted on January 1, 2017 by
-            <a href="#">Start Bootstrap</a>
+            Publicado en <?=Yii::$app->formatter->asDate($row->creado)?> a las <?=Yii::$app->formatter->asTime($row->creado)?>
           </div>
         </div>
               <?php endforeach ?>
@@ -118,15 +93,9 @@ $this->title = 'Blog Home';
             <div class="row">
               <div class="col-lg-6">
                 <ul class="list-unstyled mb-0">
-                  <li>
-                    <a href="#">Web Design</a>
-                  </li>
-                  <li>
-                    <a href="#">HTML</a>
-                  </li>
-                  <li>
-                    <a href="#">Freebies</a>
-                  </li>
+                <?php foreach($query as $row2): ?>
+                  <li><a href="#"><?=$row2 ?></a></li>
+                <?php endforeach ?>
                 </ul>
               </div>
               <div class="col-lg-6">

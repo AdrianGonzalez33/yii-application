@@ -22,7 +22,9 @@ $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity-
 
     <div class="form-group"> <?= $form->field($model, "autor")->dropDownList($varAutor, ['prompt' => 'Seleccione Uno' ]); ?></div>
 
-    <div class="form-group"><?= $form->field($model, "imagen")->input("text") ?></div>
+    <div class="form-group"><?= $form->field($model, 'categoria')->textInput(['maxlength' => true]) ?></div>
+
+    <div class="form-group"><?= $form->field($model, "file")->fileInput() ?></div>
 
     <div><input type="submit" value="Modificar" class="btn btn-primary" >
 

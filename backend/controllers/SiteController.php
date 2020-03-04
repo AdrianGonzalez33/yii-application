@@ -9,7 +9,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\Articulo;
 use yii\helpers\Html;
-use app\models\FormUpload;
+use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 
@@ -56,11 +56,18 @@ class SiteController extends Controller{
         $model = new Articulo();
         $msg = null;
         if ( $model->load(Yii::$app->request->post() ) ){
-            if ($model->validate()){
+            if (!$model->validate()){                                        //-----> cambiar
+                // obtener instancia de uploaded file
+                $imageName = $model->id_articulo;
+                $model->file = UploadedFile::getInstance($model,'file');
+                $model->file->saveAs('uploads/'.$imageName.".".$model->file->extension);
+                //guardar el path en la columna de la base de datos.
+                $model->imagen = 'uploads/'.$imageName.".".$model->file->extension;
+                //guardamos el time de cuando fue creado
+                $model->creado = time();
+                $model->modificado = null;
                 $model->save();
-                //$imagen = UploadedFile::getInstance($model,"imagen");
-                /*$imagenName = 'stu_'.$model->id_articulo.'.'.$imagen->getExtension();
-                $imagen->saveAs(''.$imagenName);*/
+
                 $model = $model->find()->all();
                 return $this->render("articulos", ["model" => $model]);
 
@@ -81,6 +88,12 @@ class SiteController extends Controller{
         }
         if($model->load(Yii::$app->request->post())){
             if($model->validate()){
+                $imageName = $model->id_articulo;
+                $model->file = UploadedFile::getInstance($model,'file');
+                $model->file->saveAs('uploads/'.$imageName.".".$model->file->extension);
+                //guardar el path en la columna de la base de datos.
+                $model->imagen = 'uploads/'.$imageName.".".$model->file->extension;
+                $model->modificado = time();
                 $model->update();
                 $model = $model->find()->all();
                 return $this->render("articulos", ["model" => $model]);
