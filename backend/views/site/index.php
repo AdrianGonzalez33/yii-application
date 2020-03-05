@@ -1,12 +1,10 @@
 <?php
-
-use yii\db\Query;
+use yii\helpers\Url;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 
-$query = new Query;
-// compose the query
-$query->select('categoria')->distinct()->from('articulo');
+$articulos = \common\models\Articulo::find()->select('categoria')->distinct()->indexBy('categoria')->column();
 
 $this->title = 'Blog';
 ?>
@@ -47,10 +45,10 @@ $this->title = 'Blog';
           <?php foreach($model as $row): ?>
           <tr>
         <div class="card mb-4">
-            <img class="card-img-top" src=<?= $row->imagen ?> alt="Card image cap">
+            <img class="card-img-top" src=/<?= $row->imagen ?> alt="Card image cap">
           <div class="card-body">
             <h2 class="card-title"><?= $row->titulo ?></h2>
-            <p class="card-text"><?= $row->contenido ?>!</p>
+            <p class="card-text"><?= $row->contenido ?></p>
             <a href="#" class="btn btn-primary">Read More &rarr;</a>
           </div>
           <div class="card-footer text-muted">
@@ -93,22 +91,16 @@ $this->title = 'Blog';
             <div class="row">
               <div class="col-lg-6">
                 <ul class="list-unstyled mb-0">
-                <?php foreach($query as $row2): ?>
-                  <li><a href="#"><?=$row2 ?></a></li>
-                <?php endforeach ?>
+                    <li><a href="http://backend.local:8080/index.php?r=site%2Findex">All</a></li>
+                    <?php foreach( $articulos as $categoria):?>
+                        <li><a href="<?= Url::toRoute(["site/categoria", "categoria" => $categoria]) ?>">Prueba</a></li>
+                        <li><a href="http://backend.local:8080/index.php?r=site%2Findex/"><?=$categoria?></a></li>
+                    <?php endforeach ?>
                 </ul>
               </div>
               <div class="col-lg-6">
                 <ul class="list-unstyled mb-0">
-                  <li>
-                    <a href="#">JavaScript</a>
-                  </li>
-                  <li>
-                    <a href="#">CSS</a>
-                  </li>
-                  <li>
-                    <a href="#">Tutorials</a>
-                  </li>
+                  <li><a href="#">JavaScript</a></li>
                 </ul>
               </div>
             </div>

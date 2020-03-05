@@ -54,20 +54,19 @@ class SiteController extends Controller{
      */
     public function actionBlog(){
         $model = new Articulo();
-        $msg = null;
-        if ( $model->load(Yii::$app->request->post() ) ){
-            if (!$model->validate()){                                        //-----> cambiar
-                // obtener instancia de uploaded file
-                $imageName = $model->id_articulo;
-                $model->file = UploadedFile::getInstance($model,'file');
-                $model->file->saveAs('uploads/'.$imageName.".".$model->file->extension);
-                //guardar el path en la columna de la base de datos.
-                $model->imagen = 'uploads/'.$imageName.".".$model->file->extension;
-                //guardamos el time de cuando fue creado
-                $model->creado = time();
-                $model->modificado = null;
-                $model->save();
 
+        if ($model->load(Yii::$app->request->post() ) ){
+            // obtener instancia de uploaded file
+            $model->file = UploadedFile::getInstance($model,'file');
+            $imageName = (string)$model->id_articulo;
+            $model->file->saveAs('uploads/'.$imageName.".".$model->file->extension, false);
+            //guardar el path en la columna de la base de datos.
+            $model->imagen = 'uploads/'.$imageName.".".$model->file->extension;
+            //guardamos el time de cuando fue creado
+            $model->creado = time();
+            $model->modificado = null;
+            if ($model->validate()){
+                $model->save();
                 $model = $model->find()->all();
                 return $this->render("articulos", ["model" => $model]);
 
@@ -76,24 +75,23 @@ class SiteController extends Controller{
             }
         }
 
-        return $this->render("blog", ['model' => $model, 'msg' => $msg]);
+        return $this->render("blog", ['model' => $model]);
     }
 
     public function actionEdit($id_articulo = false){
-        $msg =null;
         if ( $id_articulo ) {
             $model = Articulo::findOne( [ 'id_articulo' => $id_articulo ] );
         } else {
             $model = new Articulo();
         }
         if($model->load(Yii::$app->request->post())){
+            $imageName = $model->id_articulo;
+            $model->file = UploadedFile::getInstance($model,'file');
+            $model->file->saveAs('/uploads/'.$imageName.".".$model->file->extension, false);
+            //guardar el path en la columna de la base de datos.
+            $model->imagen = '/uploads/'.$imageName.".".$model->file->extension;
+            $model->modificado = time();
             if($model->validate()){
-                $imageName = $model->id_articulo;
-                $model->file = UploadedFile::getInstance($model,'file');
-                $model->file->saveAs('uploads/'.$imageName.".".$model->file->extension);
-                //guardar el path en la columna de la base de datos.
-                $model->imagen = 'uploads/'.$imageName.".".$model->file->extension;
-                $model->modificado = time();
                 $model->update();
                 $model = $model->find()->all();
                 return $this->render("articulos", ["model" => $model]);
@@ -102,7 +100,7 @@ class SiteController extends Controller{
                 $model->getErrors();
             }
         }
-        return $this->render("edit", ['model' => $model, "msg"=>$msg]);
+        return $this->render("edit", ['model' => $model]);
     }
 
     public function actionDelete(){ //borrar articulos
@@ -128,7 +126,7 @@ class SiteController extends Controller{
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'articulos','blog', 'usuarios', 'index', 'upload'], //permitidos logeados
+                        'actions' => ['logout', 'articulos','blog', 'usuarios', 'index', ], //permitidos logeados
                         'allow' => true,
                         'roles' => ['@'],
                     ],

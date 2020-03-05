@@ -1,6 +1,7 @@
 <?php
 namespace frontend\controllers;
 
+use common\models\Articulo;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -72,9 +73,10 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex()
-    {
-        return $this->render('index');
+    public function actionIndex(){ // carga articulos al blog
+        $table = new Articulo();
+        $model = $table->find()->all();
+        return $this->render("index", ["model" => $model]);
     }
 
     /**

@@ -46,7 +46,7 @@ $this->title = 'Lista de Articulos';
                                 <div class="modal-footer">
                                     <?= Html::beginForm(Url::toRoute("site/delete"), "POST") ?>
                                     <input type="hidden" name="id_articulo" value="<?= $row->id_articulo ?>">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                     <button type="submit" class="btn btn-primary">Eliminar</button>
                                     <?= Html::endForm() ?>
                                 </div>

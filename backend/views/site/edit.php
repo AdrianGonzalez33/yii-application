@@ -7,7 +7,6 @@ $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity-
 
 ?>
     <h1>Modificar Artículo</h1>
-    <h3><?= $msg ?></h3>
 
 <?php $form = ActiveForm::begin([
     "method" => "put",

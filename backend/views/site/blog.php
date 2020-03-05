@@ -3,14 +3,11 @@
 use yii\widgets\ActiveForm;
 use \coderius\pell\Pell;
 
-
-
 $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity->username, 'Anónimo' => 'Anónimo']; //array con opciones del drpDown
 //<div class="form-group"><?= $form->field($model, "contenido")->Input("String")</div>
 
 ?>
     <h1>Crear Artículo</h1>
-    <h3><?= $msg ?></h3>
 
 <?php $form = ActiveForm::begin([
     "method" => "post",

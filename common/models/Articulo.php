@@ -34,11 +34,11 @@ class Articulo extends ActiveRecord{
     public function rules(){
         return [
             [['titulo', 'contenido', 'autor', 'imagen', 'categoria'], 'required'],
-            [['id_articulo','creado', 'modificado'], 'integer'],
+            [['id_articulo'], 'integer'],
             [['titulo', 'autor', 'categoria'], 'string', 'max' => 50],
             [['imagen'], 'string', 'max' => 250],
             [['contenido'], 'string'],
-            [['file'], 'file'],
+            [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
             [['titulo', 'contenido', 'autor', 'imagen', 'categoria'], 'safe'],
 
         ];
@@ -58,8 +58,9 @@ class Articulo extends ActiveRecord{
             'modificado' => 'Modificado',
         ];
     }
+
     /**
-     * {@inheritdoc}
+     * @property int $id_articulo
      */
     public function getId(){
         return $this->getPrimaryKey();
@@ -72,9 +73,7 @@ class Articulo extends ActiveRecord{
 
     /**
      * Creates data provider instance with search query applied
-     *
      * @param array $params
-     *
      * @return ActiveDataProvider
      */
     public function search($params){
