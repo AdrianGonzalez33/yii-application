@@ -40,8 +40,19 @@ return [
 
         'urlManager' => [
             'enablePrettyUrl' => true,
-            'showScriptName' => true,
+            'showScriptName' => false,
+
             'rules' => [
+
+                '<controller>/<action>/<categoria>' => '<controller>/<action>',
+
+                '<controller>/<action>/<titulo>' => '<controller>/<action>',
+
+                //'<controller:\w+>/<id:\d+>' => '<controller>/view',
+
+                //'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+
+                //'<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],
 

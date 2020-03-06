@@ -1,12 +1,16 @@
 <?php
+
+use common\models\Articulo;
 use yii\helpers\Url;
 use yii\helpers\Html;
+//SELECT DISTINCT categoria
+//FROM articulo
+//WHERE categoria != 'categoria1'
 
 /* @var $this yii\web\View */
-
-$articulos = \common\models\Articulo::find()->select('categoria')->distinct()->indexBy('categoria')->column();
-
+$articulos = Articulo::find()->select('categoria')->distinct()->where('categoria != :categoria',['categoria'=>$categoria])->indexBy('categoria')->column();
 $this->title = 'Blog';
+
 ?>
 
 <!DOCTYPE html>
@@ -91,10 +95,9 @@ $this->title = 'Blog';
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-unstyled mb-0">
-                                <li><a href="http://backend.local:8080/index.php?r=site%2Findex">All</a></li>
+                                <li><a href="http://backend.local:8080/index.php/site/index">All</a></li>
                                 <?php foreach( $articulos as $categoria):?>
-                                    <li><a href="<?= Url::toRoute(["site/categoria", "categoria" => $categoria]) ?>">Prueba</a></li>
-                                    <li><a href="http://backend.local:8080/index.php?r=site%2Findex/"><?=$categoria?></a></li>
+                                    <li><a href="<?= Url::toRoute(["site/category", "categoria" => $categoria]) ?>"><?=$categoria?></a></li>
                                 <?php endforeach ?>
                             </ul>
                         </div>

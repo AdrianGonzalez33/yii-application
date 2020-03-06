@@ -17,6 +17,13 @@ use yii\web\UploadedFile;
  * Site controller
  */
 class SiteController extends Controller{
+
+    public function actionPost(){
+        $model = new Articulo();
+        $id_articulo = Yii::$app->request->get('id_articulo');
+        $model = $this->findModel($id_articulo);
+        return $this->render("post", ["model" => $model]);
+    }
     /**
      * Displays blog.
      *
@@ -27,6 +34,14 @@ class SiteController extends Controller{
         $model = $table->find()->all();
         return $this->render("index", ["model" => $model]);
     }
+
+
+    public function actionCategory(){ // carga categoria al blog
+        $categoria = null;
+        $categoria = Yii::$app->request->get('categoria');
+        $model = Articulo::find()->select('*')->from('articulo')->where(['categoria' => $categoria])->all();
+        return $this->render("category", ["model" => $model, "categoria"=>$categoria]);
+    }
     /**
      * Displays listaArticulos.
      *
@@ -34,7 +49,7 @@ class SiteController extends Controller{
      */
     public function actionArticulos(){ // carga a vista tabla articulos
         $table = new Articulo();
-        $model = $table->find()->all();
+        $model = $table->find()->all();//->request->getParam('categoria');
         return $this->render("articulos", ["model" => $model]);
     }
     /**
