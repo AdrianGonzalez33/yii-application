@@ -36,10 +36,10 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Blog', 'url' => ['site/index']],
-        ['label' => 'Lista de usuarios', 'url' => ['/site/usuarios']],
-        ['label' => 'Lista de Articulos', 'url' => ['/site/articulos']],
-        ['label' => 'Crear Articulo', 'url' => ['/site/blog']],
+        ['label' => 'Blog', 'url' => ['articulo/index']],
+        ['label' => 'Lista de usuarios', 'url' => ['site/usuarios']],
+        ['label' => 'Lista de Articulos', 'url' => ['articulo/articulos']],
+        ['label' => 'Crear Articulo', 'url' => ['articulo/blog']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];

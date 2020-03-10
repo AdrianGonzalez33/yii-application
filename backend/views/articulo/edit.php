@@ -2,6 +2,7 @@
 
 use common\models\Articulo;
 use yii\widgets\ActiveForm;
+use \coderius\pell\Pell;
 
 $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity->username, 'Anónimo' => 'Anónimo']; //array con opciones del drpDown
 
@@ -17,7 +18,7 @@ $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity-
 
     <div class="form-group"><?= $form->field($model, "titulo")->input("text") ?></div>
 
-    <div class="form-group"><?= $form->field($model, "contenido")->input("text") ?></div>
+    <div class="form-group"><?= $form->field($model, 'contenido')->widget(Pell::className(), []);?></div>
 
     <div class="form-group"> <?= $form->field($model, "autor")->dropDownList($varAutor, ['prompt' => 'Seleccione Uno' ]); ?></div>
 

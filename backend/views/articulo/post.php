@@ -37,9 +37,8 @@
                 <div class="post-heading">
                     <h1><?=$model->titulo ?></h1>
                     <img class="card-img-top" src=/<?= $model->imagen ?> alt="Card image cap">
-                    <span class="meta">Posted by
-              <a href="#">Start Bootstrap</a>
-              on August 24, 2019</span>
+                    <span class="meta">Publicado en <?=Yii::$app->formatter->asDate($model->creado)?> a las <?=Yii::$app->formatter->asTime($model->creado)?>
+                    </span>
                 </div>
             </div>
         </div>
@@ -51,19 +50,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-md-10 mx-auto">
-
-                <a href="#">
-                    <img class="img-fluid" src="img/post-sample-image.jpg" alt="">
-                </a>
-                <span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
-
-                <p>Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission: to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no man has gone before.</p>
-
-                <p>As I stand out here in the wonders of the unknown at Hadley, I sort of realize there’s a fundamental truth to our nature, Man must explore, and this is exploration at its greatest.</p>
-
-                <p>Placeholder text by
-                    <a href="http://spaceipsum.com/">Space Ipsum</a>. Photographs by
-                    <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>.</p>
+                <p><?=$model->contenido ?></p>
             </div>
         </div>
     </div>
