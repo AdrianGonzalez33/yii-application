@@ -4,9 +4,10 @@ use yii\widgets\ActiveForm;
 use \coderius\pell\Pell;
 
 $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity->username, 'Anónimo' => 'Anónimo']; //array con opciones del drpDown
-//<div class="form-group"><?= $form->field($model, "contenido")->Input("String")</div>
 
-?>
+?><head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+</head>
     <h1>Crear Artículo</h1>
 
 <?php $form = ActiveForm::begin([

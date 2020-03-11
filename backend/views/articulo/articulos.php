@@ -15,11 +15,7 @@ $this->title = 'Lista de Articulos';
 ]);
 ?>
 <head>
-    <style>
-        td{
-            text-align:left;
-        }
-    </style>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 </head>
 <h3>Lista de Artículos</h3>
 <table class="table table-bordered">

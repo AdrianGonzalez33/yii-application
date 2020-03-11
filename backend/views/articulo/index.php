@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Url;
-use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 $this->title = 'Blog';
@@ -10,15 +9,12 @@ $this->title = 'Blog';
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">>
 
     <!-- Bootstrap core CSS -->
     <link href="../../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <!-- Custom styles for this template -->
     <link href="../../web/css/blog-home.css" rel="stylesheet">
 
@@ -27,22 +23,20 @@ $this->title = 'Blog';
 <body>
 
 <!-- Page Content -->
-<div class="container">
+<div class="container-fluid">
 
     <div class="row">
 
         <!-- Blog Entries Column -->
         <div class="col-md-8">
-
             <h1 class="my-4">Page Heading
                 <small>Secondary Text</small>
             </h1>
-
             <!-- Blog Post -->
             <?php foreach($model as $row): ?>
             <tr>
                 <div class="card mb-4">
-                    <img class="card-img-top" width="750px" height="350px" src=/<?= $row->imagen ?> alt="Card image cap">
+                    <img class="card-img-top" src=/<?= $row->imagen ?> alt="Card image cap">
                     <div class="card-body">
                         <h2 class="card-title"><?= $row->titulo ?></h2>
                         <?php
@@ -94,7 +88,7 @@ $this->title = 'Blog';
             <!-- Categories Widget -->
             <div class="card my-4">
                 <h5 class="card-header">Categorías</h5>
-                <div class="card-body">
+                <div class="card-body" position="fixed">
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-unstyled mb-0">
@@ -132,7 +126,7 @@ $this->title = 'Blog';
 <!-- Footer -->
 <footer class="py-5 bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
     </div>
     <!-- /.container -->
 </footer>

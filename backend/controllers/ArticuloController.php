@@ -89,7 +89,7 @@ class ArticuloController extends Controller{
 
         if ($model->load(Yii::$app->request->post() ) ){
             // obtener instancia de uploaded file
-            $model->file = UploadedFile::getInstance($model,'file');
+            $model->file = UploadedFile::getInstance($model,'imagen');
             $imageName = (string)$model->id_articulo;
             $model->file->saveAs('uploads/'.$imageName.".".$model->file->extension, false);
             //guardar el path en la columna de la base de datos.
