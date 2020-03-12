@@ -28,6 +28,10 @@ class Articulo extends ActiveRecord{
         return 'articulo';
     }
 
+    public static function getDb(){
+        return Yii::$app->db;
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -1,7 +1,6 @@
 <?php
 namespace frontend\controllers;
 
-use common\models\Articulo;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -15,6 +14,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+
 
 /**
  * Site controller
@@ -35,9 +35,10 @@ class SiteController extends Controller
                         'actions' => ['signup'],
                         'allow' => true,
                         'roles' => ['?'],
+
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout'], //todos los ususarios
                         'allow' => true,
                         'roles' => ['@'],
                     ],

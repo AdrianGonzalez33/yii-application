@@ -25,7 +25,6 @@ $this->title = 'Blog';
 
 
     <!-- Custom styles for this template -->
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link href="../../web/css/blog-home.css" rel="stylesheet">
 
 </head>

@@ -27,8 +27,7 @@ $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity-
     <div><?= $form->field($model, "file")->fileInput() ?></div>
 
     <div><input type="submit" value="Crear" class="btn btn-primary" >
-
-        <input type="reset" value="Cancelar" class="btn btn-primary" onClick="window.location = 'http://127.0.0.3/articulo/articulos'" /></div>
+        <input type="reset" value="Cancelar" class="btn btn-primary" onClick="window.location" = 'http://backend.local:8080/articulo/articulos'</div>
 
 </div>
 

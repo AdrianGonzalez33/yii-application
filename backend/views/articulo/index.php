@@ -85,7 +85,7 @@ $this->title = 'Blog';
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-unstyled mb-0">
-                                <li><a href="http://127.0.0.3/articulo/index">All</a></li>
+                                <li><a href="http://backend.local:8080/articulo/index">All</a></li>
                                 <?php foreach($categorias as $categoria):?>
                                     <li><a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $categoria]) ?>"><?=$categoria?></a></li>
                                 <?php endforeach ?>
