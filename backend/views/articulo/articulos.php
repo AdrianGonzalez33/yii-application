@@ -15,7 +15,6 @@ $this->title = 'Lista de Articulos';
 ]);
 ?>
 <head>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 </head>
 <h3>Lista de Artículos</h3>
 <table class="table table-bordered">
@@ -57,7 +56,7 @@ $this->title = 'Lista de Articulos';
             <td><a href="<?= Url::toRoute(["articulo/edit", "id_articulo" => $row->id_articulo]) ?>">Editar</a></td>
             <td><a href="#" data-toggle="modal" data-target="#id_articulo<?= $row->id_articulo ?>">Eliminar</a>
                 <div class="modal fade" role="dialog" aria-hidden="true" id="id_articulo<?= $row->id_articulo ?>">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>

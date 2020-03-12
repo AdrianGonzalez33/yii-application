@@ -35,7 +35,8 @@ class Articulo extends ActiveRecord{
         return [
             [['titulo', 'contenido', 'autor', 'imagen', 'categoria'], 'required'],
             [['id_articulo'], 'integer'],
-            [['titulo', 'autor', 'categoria'], 'string', 'max' => 50],
+            [['titulo'], 'string', 'max' => 250],
+            [['autor', 'categoria'], 'string', 'max' => 50],
             [['imagen'], 'string', 'max' => 250],
             [['contenido'], 'string'],
             [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxSize' => 1024*1024*10, 'tooBig' => 'El límite son 10MB'],

@@ -10,13 +10,18 @@ $this->title = 'Blog';
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+
 </head>
 
 <body>
 
 <!-- Page Content -->
-<div class="container">
+<div class="container-fluid">
 
     <div class="row">
 
@@ -81,11 +86,11 @@ $this->title = 'Blog';
             <!-- Categories Widget -->
             <div class="card my-4">
                 <h5 class="card-header">Categorías</h5>
-                <div class="card-body">
+                <div class="card-body" position="fixed">
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-unstyled mb-0">
-                                <li><a href="http://127.0.0.3/articulo/index">All</a></li>
+                                <li><a href="http://backend.local:8080/index.php/articulo/index">All</a></li>
                                 <?php foreach($categorias as $categoria):?>
                                     <li><a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $categoria]) ?>"><?=$categoria?></a></li>
                                 <?php endforeach ?>
@@ -116,10 +121,13 @@ $this->title = 'Blog';
 </div>
 <!-- /.container -->
 
-<!-- Bootstrap core JavaScript -->
-<script src="../../../vendor/jquery/jquery.min.js"></script>
-<script src="../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+    </div>
+    <!-- /.container -->
+</footer>
 </body>
 
 </html>

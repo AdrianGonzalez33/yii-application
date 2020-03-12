@@ -14,21 +14,23 @@ $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity-
     'enableClientValidation' => true,
 ]);
 ?>
-    <div class="form-group"><?= $form->field($model, "id_articulo")->input("text") ?></div>
+<div class="form-group">
 
-    <div class="form-group"><?= $form->field($model, "titulo")->input("text") ?></div>
+    <div><?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?></div>
 
-    <div class="form-group"><?= $form->field($model, 'contenido')->widget(Pell::className(), []);?></div>
+    <div><?= $form->field($model, 'contenido')->widget(Pell::className(), []);?></div>
 
-    <div class="form-group"> <?= $form->field($model, "autor")->dropDownList($varAutor, ['prompt' => 'Seleccione Uno' ]); ?></div>
+    <div><?= $form->field($model, "autor")->dropDownList($varAutor, ['prompt' => 'Seleccione Uno' ,'class'=>"dropdown-toggle" ]); ?></div>
 
-    <div class="form-group"><?= $form->field($model, 'categoria')->textInput(['maxlength' => true]) ?></div>
+    <div><?= $form->field($model, 'categoria')->textInput(['maxlength' => true]) ?></div>
 
-    <div class="form-group"><?= $form->field($model, "file")->fileInput() ?></div>
+    <div><?= $form->field($model, "file")->fileInput() ?></div>
 
-    <div><input type="submit" value="Modificar" class="btn btn-primary" >
+    <div><input type="submit" value="Crear" class="btn btn-primary" >
 
-    <input type="reset" value="Cancelar" class="btn btn-primary" onClick="window.location = 'http://backend.local:8080/index.php?r=site%2Farticulos'" /></div>
+        <input type="reset" value="Cancelar" class="btn btn-primary" onClick="window.location = 'http://127.0.0.3/articulo/articulos'" /></div>
+
+</div>
 
 <?php $form->end() ?>
 

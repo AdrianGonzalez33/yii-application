@@ -5,10 +5,7 @@ use \coderius\pell\Pell;
 
 $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity->username, 'Anónimo' => 'Anónimo']; //array con opciones del drpDown
 
-?><head>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-</head>
-    <h1>Crear Artículo</h1>
+?><h1>Crear Artículo</h1>
 
 <?php $form = ActiveForm::begin([
     "method" => "post",
@@ -16,18 +13,22 @@ $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity-
     "options" => ["enctype" => "multipart/form-data"],
 ]);
 ?>
-    <div class="form-group"><?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?></div>
 
-    <div class="form-group"><?= $form->field($model, 'contenido')->widget(Pell::className(), []);?></div>
+    <div class="form-group">
 
-    <div class="form-group"><?= $form->field($model, "autor")->dropDownList($varAutor, ['prompt' => 'Seleccione Uno' ]); ?></div>
+        <div><?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?></div>
 
-    <div class="form-group"><?= $form->field($model, 'categoria')->textInput(['maxlength' => true]) ?></div>
+        <div><?= $form->field($model, 'contenido')->widget(Pell::className(), []);?></div>
 
-    <div class="form-group"><?= $form->field($model, "file")->fileInput() ?></div>
+        <div><?= $form->field($model, "autor")->dropDownList($varAutor, ['prompt' => 'Seleccione Uno' ,'class'=>"dropdown-toggle" ]); ?></div>
 
-    <div><input type="submit" value="Crear" class="btn btn-primary" >
+        <div><?= $form->field($model, 'categoria')->textInput(['maxlength' => true]) ?></div>
 
-    <input type="reset" value="Cancelar" class="btn btn-primary" onClick="window.location = 'http://backend.local:8080/index.php?r=site%2Farticulos'" /></div>
+        <div><?= $form->field($model, "file")->fileInput() ?></div>
 
+        <div><input type="submit" value="Crear" class="btn btn-primary" >
+
+        <input type="reset" value="Cancelar" class="btn btn-primary" onClick="window.location = 'http://127.0.0.3/articulo/articulos'" /></div>
+
+    </div>
 <?php $form->end() ?>

@@ -69,17 +69,6 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays homepage.
-     *
-     * @return mixed
-     */
-    public function actionIndex(){ // carga articulos al blog
-        $table = new Articulo();
-        $model = $table->find()->all();
-        return $this->render("index", ["model" => $model]);
-    }
-
-    /**
      * Logs in a user.
      *
      * @return mixed

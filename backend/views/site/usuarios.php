@@ -10,7 +10,6 @@ use yii\widgets\LinkPager;
 $this->title = 'Lista de usuarios';
 ?>
 <head>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 </head>
 <h3>Lista de Usuarios</h3>
 <div class="table-responsive">
