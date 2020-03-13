@@ -1,7 +1,9 @@
 <?php
-//<header class="masthead" style="background-image: url('img/post-bg.jpg')">
-
-use common\models\Comentario; ?>
+use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+$form = array();
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -54,28 +56,28 @@ use common\models\Comentario; ?>
             <hr>
 
     <hr>
+   <?php $id = (Yii::$app->user->identity);
+   $user =\common\models\User::findIdentity($id)?>
     <!-- Comments Form -->
     <div class="card my-4">
         <h5 class="card-header">Leave a Comment:</h5>
         <div class="card-body">
-            <form action="ComentarioController.php" target="post">
+
+            <?=$form= Html::beginForm(Url::toRoute("comentario/create"), "POST") ?>
                 <div class="form-group">
-                    <input id="id" name="prodId" type="hidden" value="xm234jq">
-                    <input id="prodId" name="prodId" type="hidden" value="xm234jq">
-                    <textarea class="form-control" rows="3" name="comentario"></textarea>
+                    <?= Html::hiddenInput('id_articulo', $model->id_articulo)?>
+                    <?= Html::hiddenInput('id_user', $user->getId())?>
+                    <?= Html::textarea('contenido_comentario') ?>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            <?= Html::endForm() ?>
         </div>
     </div>
-
         <!-- Single Comment -->
     <div class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
         <div class="media-body">
-            <?php $user = (Yii::$app->user->identity);
-            ?>
-            <h5 class="mt-0"><?=ucfirst($user->getUsername())." id articulo: ". $model->getPrimaryKey()?></h5>
+            <h5 class="mt-0"><?="Usuario con id: ".$user->getId()." y nombre: ".$user->getUserName()." //////// el articulo con id_articulo: ".$model->id_articulo ?></h5>
             texto del comentario
         </div>
     </div>
@@ -109,5 +111,5 @@ use common\models\Comentario; ?>
 </div>
 
 </body>
-
 </html>
+

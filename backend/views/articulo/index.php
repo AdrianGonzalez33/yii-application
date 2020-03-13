@@ -44,7 +44,7 @@ $this->title = 'Blog';
                         ?>
 
                         <p class="card-text"><?= $resumen?></p>
-                        <a class="btn btn-primary" href="<?= Url::toRoute(["articulo/post/", "id_articulo"=> $row->id_articulo]) ?>">Leer más &rarr;</a>
+                        <a class="btn btn-primary" href="<?= Url::toRoute(["articulo/post/", "id_articulo"=>$row->id_articulo]) ?>">Leer más &rarr;</a>
                     </div>
                     <div class="card-footer text-muted">Publicado en <?=Yii::$app->formatter->asDate($row->creado)?> a las <?=Yii::$app->formatter->asTime($row->creado)?>
                     </div>

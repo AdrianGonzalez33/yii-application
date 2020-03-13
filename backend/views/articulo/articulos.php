@@ -66,7 +66,7 @@ $this->title = 'Lista de Articulos';
                                 <p>¿Realmente deseas eliminar al articulo con id <?= $row->id_articulo ?>?</p>
                             </div>
                             <div class="modal-footer">
-                                <?= Html::beginForm(Url::toRoute("articulo/delete"), "POST") ?>
+                                <?= Html::beginForm(Url::toRoute("articulo/delete"), "DELETE") ?>
                                 <input type="hidden" name="id_articulo" value="<?= $row->id_articulo ?>">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                 <button type="submit" class="btn btn-primary">Eliminar</button>

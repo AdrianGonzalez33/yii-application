@@ -4,6 +4,7 @@
 namespace backend\controllers;
 
 use common\models\Articulo;
+use common\models\Comentario;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -55,8 +56,8 @@ class ArticuloController extends Controller{
     public function actionIndex(){ // carga articulos al blog
         $table = new Articulo();
         $model = $table->find()->all();
-        $articulos = $this->getCategorias();
-        return $this->render("index", ["model" => $model, 'categorias' => $articulos ]);
+        $categorias = $this->getCategorias();
+        return $this->render("index", ["model" => $model, 'categorias' => $categorias ]);
     }
     /**
      * Displays categorias en el blog.
@@ -86,7 +87,6 @@ class ArticuloController extends Controller{
      */
     public function actionBlog(){
         $model = new Articulo();
-
         if ($model->load(Yii::$app->request->post() ) ){
             // obtener instancia de uploaded file
             $model->file = UploadedFile::getInstance($model,'file');
@@ -124,7 +124,7 @@ class ArticuloController extends Controller{
         } else {
             $model = new Articulo();
         }
-        if($model->load(Yii::$app->request->post())){
+        if($model->load(Yii::$app->request->get())){
             $model->file = UploadedFile::getInstance($model,'file');
             $imageName = $model->id_articulo;
 
@@ -156,7 +156,6 @@ class ArticuloController extends Controller{
             $id_articulo = Html::encode($_POST["id_articulo"]);
             if((int) $id_articulo) {
                 $this->findModel($id_articulo)->delete();
-                //Articulo::deleteAll("id_articulo=:id_articulo", [":id_articulo" => $id_articulo]);
                 return $this->redirect(["articulos"]);
             }
         }else{

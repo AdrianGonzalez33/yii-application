@@ -4,7 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Comentario;
-use common\models\ComentarioSearch;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -61,14 +61,21 @@ class ComentarioController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate(recibir los parametros){
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-
-            $comentario = new Comentario(pasar);
-            $comentario->creado = time();
-           return $this->render('articulo/post', ['comentario' => $comentario]);
+    public function actionCreate(){
+        $model = new Comentario();
+        if(Yii::$app->request->post()){
+            $model->id_articulo = Html::encode($_POST["id_articulo"]);
+            $model->id_articulo = Html::encode($_POST["id_articulo"]);
+            $model->id_articulo = Html::encode($_POST["id_articulo"]);
+            return $this->redirect('/articulo/post?id_articulo='.$model->id_articulo);
+        /*if ($model->load(Yii::$app->request->post()) && $model->save()){
+            return $this->redirect('/articulo/post?id_articulo='.$model->id_articulo);*/
+        }else{
+            $model->getErrors();
+        }
+        $msg =$model->id_articulo;
+        return $this->redirect('/articulo/post?id_articulo='.$msg);
     }
-
     /**
      * Updates an existing Comentario model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -95,6 +102,8 @@ class ComentarioController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {

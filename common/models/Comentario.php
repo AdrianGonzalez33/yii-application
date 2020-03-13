@@ -18,14 +18,6 @@ use yii\data\ActiveDataProvider;
  * @property int|null $modificado
  */
 class Comentario extends \yii\db\ActiveRecord {
-    public function __construct($id_articulo, $id_user, $id_padre, $contenido_comentario) {
-        $this->$id_articulo = $id_articulo;
-        $this->$id_user = $id_user;
-        $this->$id_padre = $id_padre;
-        $this->$contenido_comentario = $contenido_comentario;
-        parent::__construct();
-
-    }
     /**
      * {@inheritdoc}
      */
