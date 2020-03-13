@@ -1,8 +1,12 @@
 <?php
+
+use common\models\Comentario;
+use common\models\User;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-$form = array();
+$id = (Yii::$app->user->identity);
+$user = \common\models\User::findIdentity($id);
+$comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_articulo' =>  $model->id_articulo])->all();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -14,17 +18,12 @@ $form = array();
     <meta name="author" content="">
 
     <title>Articulo</title>
-
-
     <!-- Bootstrap comentarios -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-
 </head>
-
 <body>
-
 
 <!-- Page Content -->
 <div class="container">
@@ -56,32 +55,32 @@ $form = array();
             <hr>
 
     <hr>
-   <?php $id = (Yii::$app->user->identity);
-   $user =\common\models\User::findIdentity($id)?>
     <!-- Comments Form -->
     <div class="card my-4">
         <h5 class="card-header">Leave a Comment:</h5>
         <div class="card-body">
-
-            <?=$form= Html::beginForm(Url::toRoute("comentario/create"), "POST") ?>
-                <div class="form-group">
-                    <?= Html::hiddenInput('id_articulo', $model->id_articulo)?>
-                    <?= Html::hiddenInput('id_user', $user->getId())?>
-                    <?= Html::textarea('contenido_comentario') ?>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+        <?=$form= Html::beginForm(Url::toRoute("comentario/create"), "POST") ?>
+            <div class="form-group">
+                <?= Html::hiddenInput('id_articulo', $model->id_articulo)?>
+                <?= Html::hiddenInput('id_user', $user->getId())?>
+                <?= Html::textarea('contenido_comentario') ?>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
             <?= Html::endForm() ?>
         </div>
     </div>
+
+    <?php foreach($comentarios as $comentario): ?>
+
         <!-- Single Comment -->
     <div class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
         <div class="media-body">
-            <h5 class="mt-0"><?="Usuario con id: ".$user->getId()." y nombre: ".$user->getUserName()." //////// el articulo con id_articulo: ".$model->id_articulo ?></h5>
-            texto del comentario
+            <h5 class="mt-0"><?=User::findIdentity(($comentario->getIdUser()))->username ?></h5>
+            <?=$comentario->getConenido() ?>
         </div>
     </div>
-
+    <?php endforeach ?>
     <!-- Comment with nested comments -->
     <div class="media mb-4">
         <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
@@ -109,7 +108,6 @@ $form = array();
     </div>
 
 </div>
-
 </body>
 </html>
 

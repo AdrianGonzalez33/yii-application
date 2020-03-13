@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Articulo;
 use Yii;
 use common\models\Comentario;
 use yii\helpers\Html;
@@ -12,8 +13,7 @@ use yii\filters\VerbFilter;
 /**
  * ComentarioController implements the CRUD actions for Comentario model.
  */
-class ComentarioController extends Controller
-{
+class ComentarioController extends Controller{
     /**
      * {@inheritdoc}
      */
@@ -65,16 +65,16 @@ class ComentarioController extends Controller
         $model = new Comentario();
         if(Yii::$app->request->post()){
             $model->id_articulo = Html::encode($_POST["id_articulo"]);
-            $model->id_articulo = Html::encode($_POST["id_articulo"]);
-            $model->id_articulo = Html::encode($_POST["id_articulo"]);
-            return $this->redirect('/articulo/post?id_articulo='.$model->id_articulo);
-        /*if ($model->load(Yii::$app->request->post()) && $model->save()){
-            return $this->redirect('/articulo/post?id_articulo='.$model->id_articulo);*/
+            $model->id_user = Html::encode($_POST["id_user"]);
+            $model->contenido_comentario = Html::encode($_POST["contenido_comentario"]);
+            $model->creado = time();
+            $model->save();
+            $comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_articulo' =>  $model->id_articulo])->all();
+            return $this->redirect(['/articulo/post?id_articulo='.$model->id_articulo,'comentarios' => $comentarios]);
         }else{
             $model->getErrors();
         }
-        $msg =$model->id_articulo;
-        return $this->redirect('/articulo/post?id_articulo='.$msg);
+        return $this->redirect('/articulo/index');
     }
     /**
      * Updates an existing Comentario model.
@@ -83,8 +83,7 @@ class ComentarioController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id){
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

@@ -37,7 +37,7 @@ class Comentario extends \yii\db\ActiveRecord {
         return [
             [['id_articulo', 'id_user', 'contenido_comentario'], 'required'],
             [['id_comentario', 'id_articulo', 'id_user', 'id_padre', 'creado', 'modificado'], 'integer'],
-            [['contenido_comentario'], 'string', 'safe'],
+            [['contenido_comentario'], 'safe'],
         ];
     }
 
@@ -62,7 +62,15 @@ class Comentario extends \yii\db\ActiveRecord {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-
+    public function getIdUser(){
+            return $this->id_user;
+    }
+    public function getConenido(){
+        return $this->contenido_comentario;
+    }
+    public function getPadre(){
+        return $this->id_padre;
+    }
     /**
      * Creates data provider instance with search query applied
      *
