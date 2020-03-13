@@ -13,16 +13,13 @@ use yii\filters\AccessControl;
  */
 class SiteController extends Controller{
     /**
-     * Displays all users on listaUsuarios.
+     * Displays redirige a la pagina principal.
      *
      * @return string
      */
-    public function actionUsuarios(){ //carga a vista tabla usuarios
-        $table = new User();
-        $model = $table->find()->all();
-        return $this->render("usuarios", ["model" => $model]);
+    public function actionIndex(){
+        return $this->redirect(["articulo/index"]);
     }
-
     public function behaviors() {
         return [
             'access' => [

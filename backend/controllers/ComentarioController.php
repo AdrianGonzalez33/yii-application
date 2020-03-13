@@ -2,7 +2,6 @@
 
 namespace backend\controllers;
 
-use common\models\Articulo;
 use Yii;
 use common\models\Comentario;
 use yii\helpers\Html;
@@ -17,8 +16,7 @@ class ComentarioController extends Controller{
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
+    public function behaviors(){
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -33,8 +31,7 @@ class ComentarioController extends Controller{
      * Lists all Comentario models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex(){
         $searchModel = new Comentario();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -70,7 +67,7 @@ class ComentarioController extends Controller{
             $model->creado = time();
             $model->save();
             $comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_articulo' =>  $model->id_articulo])->all();
-            return $this->redirect(['/articulo/post?id_articulo='.$model->id_articulo,'comentarios' => $comentarios]);
+            return $this->redirect(['/articulo/post/'.$model->id_articulo,'comentarios' => $comentarios]);
         }else{
             $model->getErrors();
         }
@@ -118,8 +115,7 @@ class ComentarioController extends Controller{
      * @return Comentario the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id){
         if (($model = Comentario::findOne($id)) !== null) {
             return $model;
         }

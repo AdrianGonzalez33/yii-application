@@ -44,9 +44,12 @@ class ArticuloController extends Controller{
      */
     public function actionPost(){
         $model = new Articulo();
-        $id_articulo = Yii::$app->request->get('id_articulo');
-        $model = $this->findModel($id_articulo);
-        return $this->render("post", ["model" => $model]);
+        if(Yii::$app->request->get()){
+            $id_articulo =Html::encode($_GET["id"]);
+            $model = $this->findModel($id_articulo);
+            return $this->render("post",[ "model" => $model]);
+        }
+        return $this->render("index");
     }
     /**
      * Displays blog.
@@ -66,7 +69,7 @@ class ArticuloController extends Controller{
      */
     public function actionCategory(){ // carga categoria al blog
         $categoria = null;
-        $categoria = Yii::$app->request->get('categoria');
+        $categoria = Yii::$app->request->get('id');
         $model = Articulo::find()->select('*')->from('articulo')->where(['categoria' => $categoria])->all();
         return $this->render("category", ["model" => $model, "categoria"=>$categoria]);
     }
@@ -85,7 +88,7 @@ class ArticuloController extends Controller{
      *
      * @return string
      */
-    public function actionBlog(){
+    public function actionCreate(){
         $model = new Articulo();
         if ($model->load(Yii::$app->request->post() ) ){
             // obtener instancia de uploaded file
@@ -107,7 +110,7 @@ class ArticuloController extends Controller{
             }
         }
 
-        return $this->render("blog", ['model' => $model]);
+        return $this->render("create", ['model' => $model]);
     }
 
     /**
@@ -127,7 +130,6 @@ class ArticuloController extends Controller{
         if($model->load(Yii::$app->request->get())){
             $model->file = UploadedFile::getInstance($model,'file');
             $imageName = $model->id_articulo;
-
             $model->file->saveAs('uploads/'.$imageName.".".$model->file->extension, false);
             //guardar el path en la columna de la base de datos.
             $model->imagen = 'uploads/'.$imageName.".".$model->file->extension;

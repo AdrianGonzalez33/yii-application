@@ -12,6 +12,7 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
+    'language'=> 'es-ES',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
@@ -44,13 +45,13 @@ return [
 
             'rules' => [
 
+                '<controller>/<action>/<id>' => '<controller>/<action>',
+
                 '<controller>/<action>/<categoria>' => '<controller>/<action>',
 
-                '<controller>/<action>/<titulo>' => '<controller>/<action>',
+                '<controller:\w+>/<id_articulo:\d+>' => '<controller>/view',
 
-                //'<controller:\w+>/<id:\d+>' => '<controller>/view',
-
-                //'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>/<id_articulo:\d+>' => '<controller>/<action>',
 
                 //'<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],

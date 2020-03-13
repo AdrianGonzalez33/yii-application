@@ -10,6 +10,16 @@ use yii\web\NotFoundHttpException;
 
 class UserController extends Controller{
     /**
+     * Displays all users on listaUsuarios.
+     *
+     * @return string
+     */
+    public function actionUsuarios(){ //carga a vista tabla usuarios
+        $table = new User();
+        $model = $table->find()->all();
+        return $this->render("usuarios", ["model" => $model]);
+    }
+    /**
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id

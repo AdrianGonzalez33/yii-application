@@ -1,10 +1,9 @@
 <?php
 
-use common\models\Articulo;
 use yii\widgets\ActiveForm;
 use \coderius\pell\Pell;
 
-$varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity->username, 'Anónimo' => 'Anónimo']; //array con opciones del drpDown
+$varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity->username, 'Anónimo' => 'Anónimo']; //array con opciones del dropDown
 
 ?>
     <h1>Modificar Artículo</h1>
