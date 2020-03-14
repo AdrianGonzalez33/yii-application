@@ -24,18 +24,16 @@ class SiteController extends Controller{
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'only' => ['login', 'logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error',], //solo permitidos sin logear
                         'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'articulos','blog', 'usuarios', 'index', ], //permitidos logeados
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'actions' => ['login', 'signup'], //a todos, sin logear
+                        'roles' => ['?'],
                     ],
                     [
                         'allow' => true,
+                        'actions' =>  ['logout'], //permitidos logeados
                         'roles' => ['@'],
                     ],
                 ],

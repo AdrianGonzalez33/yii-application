@@ -5,6 +5,8 @@ namespace backend\controllers;
 
 
 use common\models\User;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -67,5 +69,43 @@ class UserController extends Controller{
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function behaviors() {
+    return [
+        'access' => [
+            'class' => AccessControl::className(),
+            'only' => [ 'usuarios'],
+            'rules' => [
+                [
+                    'allow' => false,
+                    'actions' => ['usuarios'], //a todos, sin logear
+                    'roles' => ['?'],
+                ],
+                [
+                    'allow' => true,
+                    'actions' =>  [ 'usuarios'], //permitidos logeados
+                    'roles' => ['@'],
+                ],
+            ],
+        ],
+        'verbs' => [
+            'class' => VerbFilter::className(),
+            'actions' => [
+                'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
     }
 }

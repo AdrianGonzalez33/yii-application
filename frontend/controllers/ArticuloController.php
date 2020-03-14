@@ -177,11 +177,11 @@ class ArticuloController extends Controller{
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error',], //solo permitidos sin logear
+                        'actions' => ['index'], //solo permitidos sin logear
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'articulos','blog', 'usuarios', 'index', ], //permitidos logeados
+                        'actions' => ['index', ], //permitidos logeados
                         'allow' => true,
                         'roles' => ['@'],
                     ],

@@ -93,10 +93,9 @@ class ArticuloController extends Controller{
         if ($model->load(Yii::$app->request->post() ) ){
             // obtener instancia de uploaded file
             $model->file = UploadedFile::getInstance($model,'file');
-            $imageName = (string)$model->id_articulo;
-            $model->file->saveAs('uploads/'.$imageName.".".$model->file->extension, false);
+            $model->file->saveAs('uploads/'.$model->file->baseName.".".$model->file->extension, false);
             //guardar el path en la columna de la base de datos.
-            $model->imagen = 'uploads/'.$imageName.".".$model->file->extension;
+            $model->imagen = 'uploads/'.$model->file->baseName.".".$model->file->extension;
             //guardamos el time de cuando fue creado
             $model->creado = time();
             $model->modificado = null;
@@ -129,10 +128,9 @@ class ArticuloController extends Controller{
         }
         if($model->load(Yii::$app->request->get())){
             $model->file = UploadedFile::getInstance($model,'file');
-            $imageName = $model->id_articulo;
-            $model->file->saveAs('uploads/'.$imageName.".".$model->file->extension, false);
+            $model->file->saveAs('uploads/'.$model->file->baseName.".".$model->file->extension, false);
             //guardar el path en la columna de la base de datos.
-            $model->imagen = 'uploads/'.$imageName.".".$model->file->extension;
+            $model->imagen = 'uploads/'.$model->file->baseName.".".$model->file->extension;
             $model->modificado = time();
             if($model->validate()){
                 $model->update();

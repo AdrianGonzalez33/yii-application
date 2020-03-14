@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Url;
-
+use frontend\assets\AppAsset;
+$backend = AppAsset::register($this);
 /* @var $this yii\web\View */
 $this->title = 'Blog';
 ?>
@@ -31,7 +32,7 @@ $this->title = 'Blog';
             <?php foreach($model as $row): ?>
             <tr>
                 <div class="card mb-4">
-                    <img class="card-img-top" src=/<?= $row->imagen ?> alt="Card image cap">
+                    <img class="card-img-top" src=/<?= $backend->baseUrl."web/".$row->imagen ?> alt="Card image cap">
                     <div class="card-body">
                         <h2 class="card-title"><?= $row->titulo ?></h2>
                         <?php
