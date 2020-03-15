@@ -4,8 +4,8 @@
 namespace backend\controllers;
 
 use common\models\Articulo;
-use common\models\Comentario;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -90,16 +90,13 @@ class ArticuloController extends Controller{
      */
     public function actionCreate(){
         $model = new Articulo();
-        if ($model->load(Yii::$app->request->post() ) ){
-            // obtener instancia de uploaded file
-            $model->file = UploadedFile::getInstance($model,'file');
-            $model->file->saveAs('uploads/'.$model->file->baseName.".".$model->file->extension, false);
-            //guardar el path en la columna de la base de datos.
-            $model->imagen = 'uploads/'.$model->file->baseName.".".$model->file->extension;
-            //guardamos el time de cuando fue creado
-            $model->creado = time();
-            $model->modificado = null;
+        if ($model->load(Yii::$app->request->post())){
+            $model->archivo = UploadedFile::getInstance($model,'archivo');
             if ($model->validate()){
+                $model->creado = time();
+                $nombreFichero = $model->archivo->getBaseName();
+                $model->archivo->saveAs('uploads/'.$nombreFichero.".".$model->archivo->extension, false);
+                $model->imagen = 'uploads/'.$nombreFichero.".".$model->archivo->extension;
                 $model->save();
                 $model = $model->find()->all();
                 return $this->render("articulos", ["model" => $model]);
@@ -108,37 +105,34 @@ class ArticuloController extends Controller{
                 $model->getErrors();
             }
         }
-
         return $this->render("create", ['model' => $model]);
     }
 
     /**
      * Displays en edit todos los datos
      * de un articulo para modificarlo.
-     * @param bool $id_articulo
+     * @param $id_articulo
      * @return string
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws NotFoundHttpException
      */
-    public function actionEdit($id_articulo = false){
-        if ( $id_articulo ) {
-            $model = Articulo::findOne( [ 'id_articulo' => $id_articulo ] );
-        } else {
-            $model = new Articulo();
-        }
-        if($model->load(Yii::$app->request->get())){
-            $model->file = UploadedFile::getInstance($model,'file');
-            $model->file->saveAs('uploads/'.$model->file->baseName.".".$model->file->extension, false);
-            //guardar el path en la columna de la base de datos.
-            $model->imagen = 'uploads/'.$model->file->baseName.".".$model->file->extension;
-            $model->modificado = time();
-            if($model->validate()){
-                $model->update();
-                $model = $model->find()->all();
-                return $this->render("articulos", ["model" => $model]);
+    public function actionEdit(){
+        if(Yii::$app->request->get()){
+        $id_articulo =Html::encode($_GET["id"]);
+        $model = $this->findModel($id_articulo);
+            if ($model->load(Yii::$app->request->post())) {
+                $model->archivo = UploadedFile::getInstance($model, 'archivo');
+                if ($model->validate()) {
+                    $model->modificado = time();
+                    $nombreFichero = $model->archivo->getBaseName();
+                    $model->archivo->saveAs('uploads/' . $nombreFichero . "." . $model->archivo->extension, false);
+                    $model->imagen = 'uploads/' . $nombreFichero . "." . $model->archivo->extension;
+                    $model->save();
+                    $model = $model->find()->all();
+                    return $this->render("articulos", ["model" => $model]);
 
-            }else{
-                $model->getErrors();
+                } else {
+                    $model->getErrors();
+                }
             }
         }
         return $this->render("edit", ['model' => $model]);
@@ -149,7 +143,7 @@ class ArticuloController extends Controller{
      * @return string
      * @throws NotFoundHttpException
      * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws StaleObjectException
      */
     public function actionDelete(){ //borrar articulos
         if(Yii::$app->request->post()){

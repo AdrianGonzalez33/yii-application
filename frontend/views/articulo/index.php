@@ -2,24 +2,23 @@
 use yii\helpers\Url;
 use frontend\assets\AppAsset;
 $backend = AppAsset::register($this);
+
 /* @var $this yii\web\View */
 $this->title = 'Blog';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-Es">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">>
-
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 
 <body>
 
 <!-- Page Content -->
-<div class="container-fluid">
+<div class="container">
 
     <div class="row">
 
@@ -28,11 +27,12 @@ $this->title = 'Blog';
             <h1 class="my-4">Page Heading
                 <small>Secondary Text</small>
             </h1>
+            <?= $backend->baseUrl ?>
             <!-- Blog Post -->
             <?php foreach($model as $row): ?>
             <tr>
                 <div class="card mb-4">
-                    <img class="card-img-top" src=/<?= $backend->baseUrl."web/".$row->imagen ?> alt="Card image cap">
+                    <img class="card-img-top" src=<?= @$backend->sourcePath."/".$row->imagen ?> alt="Card image cap">
                     <div class="card-body">
                         <h2 class="card-title"><?= $row->titulo ?></h2>
                         <?php
@@ -47,7 +47,7 @@ $this->title = 'Blog';
                         ?>
 
                         <p class="card-text"><?= $resumen?></p>
-                        <a class="btn btn-primary" href="<?= Url::toRoute(["articulo/post/", "id_articulo"=> $row->id_articulo]) ?>">Leer más &rarr;</a>
+                        <a class="btn btn-primary" href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo]) ?>">Leer más &rarr;</a>
                     </div>
                     <div class="card-footer text-muted">Publicado en <?=Yii::$app->formatter->asDate($row->creado)?> a las <?=Yii::$app->formatter->asTime($row->creado)?>
                     </div>
@@ -84,11 +84,11 @@ $this->title = 'Blog';
             <!-- Categories Widget -->
             <div class="card my-4">
                 <h5 class="card-header">Categorías</h5>
-                <div class="card-body" position="fixed">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-unstyled mb-0">
-                                <li><a href="http://backend.local:8080/index.php/articulo/index">All</a></li>
+                                <li><a href="http://frontend.local/articulo/index">All</a></li>
                                 <?php foreach($categorias as $categoria):?>
                                     <li><a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $categoria]) ?>"><?=$categoria?></a></li>
                                 <?php endforeach ?>
@@ -119,13 +119,11 @@ $this->title = 'Blog';
 </div>
 <!-- /.container -->
 
-<!-- Footer -->
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
-    </div>
-    <!-- /.container -->
-</footer>
+<!-- Bootstrap core JavaScript -->
+<script src="../../../vendor/jquery/jquery.min.js"></script>
+<script src="../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>
+

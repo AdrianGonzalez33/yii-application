@@ -11,8 +11,10 @@ $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity-
 <?php $form = ActiveForm::begin([
     "method" => "put",
     'enableClientValidation' => true,
+    "options" => ["enctype" => "multipart/form-data"],
 ]);
 ?>
+
 <div class="form-group">
 
     <div><?= $form->field($model, 'titulo')->textInput(['maxlength' => true]) ?></div>
@@ -23,12 +25,12 @@ $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity-
 
     <div><?= $form->field($model, 'categoria')->textInput(['maxlength' => true]) ?></div>
 
-    <div><?= $form->field($model, "file")->fileInput() ?></div>
+    <div><?= $form->field($model, "archivo")->fileInput() ?></div>
 
-    <div><input type="submit" value="Crear" class="btn btn-primary" >
-        <input type="reset" value="Cancelar" class="btn btn-primary" onClick="window.location" = 'http://backend.local:8080/articulo/articulos'</div>
+    <div><input type="submit" value="Modificar" class="btn btn-primary" >
 
-</div>
+        <a class="btn btn-primary" href="http://backend.local/articulo/articulos" role="button">Cancelar</a>
 
-<?php $form->end() ?>
+    </div>
+    <?php $form->end() ?>
 

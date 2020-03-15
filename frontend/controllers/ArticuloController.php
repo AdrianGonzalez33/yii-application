@@ -10,7 +10,6 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Html;
-use yii\web\UploadedFile;
 
 class ArticuloController extends Controller{
     /**
@@ -43,9 +42,12 @@ class ArticuloController extends Controller{
      */
     public function actionPost(){
         $model = new Articulo();
-        $id_articulo = Yii::$app->request->get('id_articulo');
-        $model = $this->findModel($id_articulo);
-        return $this->render("post", ["model" => $model]);
+        if(Yii::$app->request->get()){
+            $id_articulo =Html::encode($_GET["id"]);
+            $model = $this->findModel($id_articulo);
+            return $this->render("post",[ "model" => $model]);
+        }
+        return $this->render("index");
     }
     /**
      * Displays blog.
@@ -55,8 +57,8 @@ class ArticuloController extends Controller{
     public function actionIndex(){ // carga articulos al blog
         $table = new Articulo();
         $model = $table->find()->all();
-        $articulos = $this->getCategorias();
-        return $this->render("index", ["model" => $model, 'categorias' => $articulos ]);
+        $categorias = $this->getCategorias();
+        return $this->render("index", ["model" => $model, 'categorias' => $categorias ]);
     }
     /**
      * Displays categorias en el blog.
@@ -65,7 +67,7 @@ class ArticuloController extends Controller{
      */
     public function actionCategory(){ // carga categoria al blog
         $categoria = null;
-        $categoria = Yii::$app->request->get('categoria');
+        $categoria = Yii::$app->request->get('id');
         $model = Articulo::find()->select('*')->from('articulo')->where(['categoria' => $categoria])->all();
         return $this->render("category", ["model" => $model, "categoria"=>$categoria]);
     }
@@ -79,109 +81,18 @@ class ArticuloController extends Controller{
         $model = $table->find()->all();//->request->getParam('categoria');
         return $this->render("articulos", ["model" => $model]);
     }
-    /**
-     * Create Articulo.
-     *
-     * @return string
-     */
-    public function actionBlog(){
-        $model = new Articulo();
 
-        if ($model->load(Yii::$app->request->post() ) ){
-            // obtener instancia de uploaded file
-            $model->file = UploadedFile::getInstance($model,'imagen');
-            $imageName = (string)$model->id_articulo;
-            $model->file->saveAs('uploads/'.$imageName.".".$model->file->extension, false);
-            //guardar el path en la columna de la base de datos.
-            $model->imagen = 'uploads/'.$imageName.".".$model->file->extension;
-            //guardamos el time de cuando fue creado
-            $model->creado = time();
-            $model->modificado = null;
-            if ($model->validate()){
-                $model->save();
-                $model = $model->find()->all();
-                return $this->render("articulos", ["model" => $model]);
-
-            }else{
-                $model->getErrors();
-            }
-        }
-
-        return $this->render("blog", ['model' => $model]);
-    }
-
-    /**
-     * Displays en edit todos los datos
-     * de un articulo para modificarlo.
-     * @param bool $id_articulo
-     * @return string
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public function actionEdit($id_articulo = false){
-        if ( $id_articulo ) {
-            $model = Articulo::findOne( [ 'id_articulo' => $id_articulo ] );
-        } else {
-            $model = new Articulo();
-        }
-        if($model->load(Yii::$app->request->post())){
-            $model->file = UploadedFile::getInstance($model,'imagen');
-            $imageName = $model->id_articulo;
-
-            $model->file->saveAs('uploads/'.$imageName.".".$model->file->extension, false);
-            //guardar el path en la columna de la base de datos.
-            $model->imagen = 'uploads/'.$imageName.".".$model->file->extension;
-            $model->modificado = time();
-            if($model->validate()){
-                $model->update();
-                $model = $model->find()->all();
-                return $this->render("articulos", ["model" => $model]);
-
-            }else{
-                $model->getErrors();
-            }
-        }
-        return $this->render("edit", ['model' => $model]);
-    }
-
-    /**
-     * Delete blog.
-     * @return string
-     * @throws NotFoundHttpException
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public function actionDelete(){ //borrar articulos
-        if(Yii::$app->request->post()){
-            $id_articulo = Html::encode($_POST["id_articulo"]);
-            if((int) $id_articulo) {
-                $this->findModel($id_articulo)->delete();
-                //Articulo::deleteAll("id_articulo=:id_articulo", [":id_articulo" => $id_articulo]);
-                return $this->redirect(["articulos"]);
-            }
-        }else{
-            return $this->redirect(["articulos"]);
-        }
-    }
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
-    }
     public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index'], //solo permitidos sin logear
+                        'actions' => ['index', 'category','post'], //solo permitidos sin logear
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['index', ], //permitidos logeados
+                        'actions' => ['index', 'category','post'], //permitidos logeados
                         'allow' => true,
                         'roles' => ['@'],
                     ],

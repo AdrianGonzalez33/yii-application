@@ -5,7 +5,12 @@ use common\models\User;
 use yii\helpers\Url;
 use yii\helpers\Html;
 $id = (Yii::$app->user->identity);
-$user = \common\models\User::findIdentity($id);
+$user=\common\models\User::findIdentity($id);
+if($user !=null){
+    $user= $user->getId();
+}
+
+
 $comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_articulo' =>  $model->id_articulo])->all();
 ?>
 <!DOCTYPE html>
@@ -54,60 +59,65 @@ $comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_a
 
             <hr>
 
-    <hr>
-    <!-- Comments Form -->
-    <div class="card my-4">
-        <h5 class="card-header">Leave a Comment:</h5>
-        <div class="card-body">
-        <?=$form= Html::beginForm(Url::toRoute("comentario/create"), "POST") ?>
-            <div class="form-group">
-                <?= Html::hiddenInput('id_articulo', $model->id_articulo)?>
-                <?= Html::hiddenInput('id_user', $user->getId())?>
-                <?= Html::textarea('contenido_comentario') ?>
+            <hr>
+            <!-- Comments Form -->
+            <div class="card my-4">
+                <h5 class="card-header">Deja un comentario:</h5>
+                <div class="card-body">
+                    <?=$form= Html::beginForm(Url::toRoute("comentario/create"), "POST") ?>
+                    <div class="form-group">
+                        <?= Html::hiddenInput('id_articulo', $model->id_articulo)?>
+                        <?= Html::hiddenInput('id_user', $user)?>
+                        <?= Html::textarea('contenido_comentario') ?>
+                    </div>
+                    <?php
+                    if($user!=null) {
+                        echo '<button type="submit" class="btn btn-primary"> Enviar</button>';
+                    }else {
+                        echo '<button type="submit" class="btn btn-primary" disabled>Bloquedo</button>';
+                    }
+                    ?>
+                    <?= Html::endForm() ?>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <?= Html::endForm() ?>
-        </div>
-    </div>
 
-    <?php foreach($comentarios as $comentario): ?>
-
-        <!-- Single Comment -->
-    <div class="media mb-4">
-        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-        <div class="media-body">
-            <h5 class="mt-0"><?=User::findIdentity(($comentario->getIdUser()))->username ?></h5>
-            <?=$comentario->getConenido() ?>
-        </div>
-    </div>
-    <?php endforeach ?>
-    <!-- Comment with nested comments -->
-    <div class="media mb-4">
-        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-        <div class="media-body">
-            <h5 class="mt-0">Commenter Name</h5>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-
-            <div class="media mt-4">
+            <?php foreach($comentarios as $comentario): ?>
+                <!-- Single Comment -->
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0"><?=User::findIdentity(($comentario->getIdUser()))->username ?></h5>
+                        <?=$comentario->getConenido() ?>
+                    </div>
+                </div>
+            <?php endforeach ?>
+            <!-- Comment with nested comments -->
+            <div class="media mb-4">
                 <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                 <div class="media-body">
                     <h5 class="mt-0">Commenter Name</h5>
                     Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                </div>
-            </div>
 
-            <div class="media mt-4">
-                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                <div class="media-body">
-                    <h5 class="mt-0">Commenter Name</h5>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    <div class="media mt-4">
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                        <div class="media-body">
+                            <h5 class="mt-0">Commenter Name</h5>
+                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        </div>
+                    </div>
+
+                    <div class="media mt-4">
+                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                        <div class="media-body">
+                            <h5 class="mt-0">Commenter Name</h5>
+                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
         </div>
-    </div>
-
-</div>
 </body>
 </html>
 

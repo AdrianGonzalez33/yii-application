@@ -53,7 +53,7 @@ $this->title = 'Blog';
                             $resumen = $textoPlano;
                         }
                         ?>
-                        <p class="card-text"><?= $resumen?> ?></p>
+                        <p class="card-text"><?= $resumen?></p>
                         <a class="btn btn-primary" href="<?= Url::toRoute(["articulo/post/", "id_articulo"=> $row->id_articulo]) ?>">Leer más &rarr;</a>
                     </div>
                     <div class="card-footer text-muted">

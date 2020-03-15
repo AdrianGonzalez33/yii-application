@@ -14,6 +14,9 @@ return [
     'modules' => [],
     'language'=> 'es-ES',
     'components' => [
+        'assetManager' => [
+            'linkAssets' => true,
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
@@ -53,7 +56,7 @@ return [
 
                 '<controller:\w+>/<action:\w+>/<id_articulo:\d+>' => '<controller>/<action>',
 
-                //'<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],
 

@@ -11,6 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'language'=> 'es-ES',
     'components' => [
         'assetManager' => [
             'linkAssets' => true,
@@ -43,6 +44,17 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+
+                '<controller>/<action>/<id>' => '<controller>/<action>',
+
+                '<controller>/<action>/<categoria>' => '<controller>/<action>',
+
+                '<controller:\w+>/<id_articulo:\d+>' => '<controller>/view',
+
+                '<controller:\w+>/<action:\w+>/<id_articulo:\d+>' => '<controller>/<action>',
+
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+
             ],
         ],
     ],

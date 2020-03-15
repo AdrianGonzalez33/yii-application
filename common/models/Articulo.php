@@ -20,7 +20,7 @@ use yii\db\ActiveRecord;
  * @property int $modificado
  */
 class Articulo extends ActiveRecord{
-    public $file;
+    public $archivo;
     /**
      * {@inheritdoc}
      */
@@ -37,14 +37,15 @@ class Articulo extends ActiveRecord{
      */
     public function rules(){
         return [
-            [['titulo', 'contenido', 'autor', 'imagen', 'categoria'], 'required'],
+            [['titulo', 'contenido', 'autor', 'archivo','categoria'], 'required'],
             [['id_articulo'], 'integer'],
+            [['archivo'], 'file'],
             [['titulo'], 'string', 'max' => 250],
             [['autor', 'categoria'], 'string', 'max' => 50],
             [['imagen'], 'string', 'max' => 250],
             [['contenido'], 'string'],
-            [['file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxSize' => 1024*1024*10, 'tooBig' => 'El límite son 10MB'],
-            [['titulo', 'contenido', 'autor', 'imagen', 'categoria'], 'safe'],
+            [['archivo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxSize' => 1024*1024*10, 'tooBig' => 'El límite son 10MB'],
+            [['titulo', 'contenido', 'autor', 'archivo', 'categoria'], 'safe'],
 
         ];
     }
@@ -57,7 +58,7 @@ class Articulo extends ActiveRecord{
             'titulo' => 'Titulo',
             'contenido' => 'Contenido',
             'autor' => 'Autor',
-            'file'=> 'Imagen',
+            'imagen'=> 'Imagen',
             'categoria' => 'Categoria',
             'creado' => 'Creado',
             'modificado' => 'Modificado',

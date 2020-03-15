@@ -34,26 +34,16 @@ $this->title = 'Lista de Articulos';
             <td><?= $row->categoria?></td>
             <td><?= $row->autor ?></td>
             <?php // limpia codigo html
-            $input = strip_tags($row->contenido);
-            $config = HTMLPurifier_Config::createDefault();
-            $config->set('Core.Encoding', 'ISO-8859-1');
-            $config->set('AutoFormat.AutoParagraph', true);
-            $config->set('HTML.Allowed', 'b,p[align],div,a[target|href]');
-            $def = $config->getHTMLDefinition(true);
-            $def->addAttribute('a', 'target', new HTMLPurifier_AttrDef_Enum(
-                array('_blank')
-            ));
-            $purifier = new HTMLPurifier($config);
-            $output= $purifier->purify($input);
+            $textoPlano = strip_tags($row->contenido);
             // reducir texto
-            if(strlen($output) >= 60){
-                $resumen = substr($input,0,strrpos(substr($input,0,60)," "))."...";
+            if(strlen($textoPlano) >= 60){
+                $resumen = substr($textoPlano,0,strrpos(substr($textoPlano,0,60)," "))."...";
             }else{
-                $resumen = $output;
+                $resumen = $textoPlano;
             }
             ?>
             <td><?=$resumen?></td>
-            <td><a href="<?= Url::toRoute(["articulo/edit", "id_articulo" => $row->id_articulo]) ?>">Editar</a></td>
+            <td><a href="<?= Url::toRoute(["articulo/edit/", "id" => $row->id_articulo]) ?>">Editar</a></td>
             <td><a href="#" data-toggle="modal" data-target="#id_articulo<?= $row->id_articulo ?>">Eliminar</a>
                 <div class="modal fade" role="dialog" aria-hidden="true" id="id_articulo<?= $row->id_articulo ?>">
                     <div class="modal-dialog modal-dialog-centered">
