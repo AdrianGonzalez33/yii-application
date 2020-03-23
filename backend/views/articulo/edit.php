@@ -29,7 +29,7 @@ $varAutor = [  Yii::$app->user->identity->username => Yii::$app->user->identity-
 
     <div><input type="submit" value="Modificar" class="btn btn-primary" >
 
-        <a class="btn btn-primary" href="http://backend.local/articulo/articulos" role="button">Cancelar</a>
+        <a class="btn btn-primary" href="http://backend.test/articulo/articulos" role="button">Cancelar</a>
 
     </div>
     <?php $form->end() ?>

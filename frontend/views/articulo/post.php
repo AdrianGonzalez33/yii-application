@@ -9,26 +9,11 @@ $user=\common\models\User::findIdentity($id);
 if($user !=null){
     $user= $user->getId();
 }
-
+$img = Url::to('@web/assets/c2257e59/');
 $comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_articulo' =>  $model->id_articulo])->all();
 ?>
-<!DOCTYPE html>
-<html lang="es">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Articulo</title>
-    <!-- Bootstrap comentarios -->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-</head>
 <body>
-
 <!-- Page Content -->
 <div class="container">
     <div class="row">
@@ -49,7 +34,7 @@ $comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_a
             <hr>
 
             <!-- Preview Image -->
-            <img class="img-fluid rounded" src=/<?= $model->imagen ?> alt="">
+            <img class="img-fluid rounded" src=<?=$img.$model->imagen ?> alt="Card image cap">
 
             <hr>
 

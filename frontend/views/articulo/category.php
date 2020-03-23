@@ -9,8 +9,8 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 $articulos = Articulo::find()->select('categoria')->distinct()->where('categoria != :categoria',['categoria'=>$categoria])->indexBy('categoria')->column();
+$img = Url::to('@web/assets/c2257e59/');
 $this->title = 'Blog';
-
 
 ?>
 
@@ -41,7 +41,7 @@ $this->title = 'Blog';
             <?php foreach($model as $row): ?>
             <tr>
                 <div class="card mb-4">
-                    <img class="card-img-top" src=/<?= $row->imagen ?> alt="Card image cap">
+                    <img class="card-img-top" src=<?= $img.$row->imagen ?> alt="Card image cap">
                     <div class="card-body">
                         <h2 class="card-title"><?= $row->titulo ?></h2>
                         <?php
@@ -97,7 +97,7 @@ $this->title = 'Blog';
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-unstyled mb-0">
-                                <li><a href="http://frontend.local/articulo/index">All</a></li>
+                                <li><a href="http://frontend.test/articulo/index">All</a></li>
                                 <?php foreach( $articulos as $categoria):?>
                                     <li><a href="<?= Url::toRoute(["articulo/category", "categoria" => $categoria]) ?>"><?=$categoria?></a></li>
                                 <?php endforeach ?>

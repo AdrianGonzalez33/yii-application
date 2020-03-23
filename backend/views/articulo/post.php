@@ -10,7 +10,7 @@ if($user !=null){
     $user= $user->getId();
 }
 
-
+$img = Url::to('@web/uploads/');
 $comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_articulo' =>  $model->id_articulo])->all();
 ?>
 <!DOCTYPE html>
@@ -22,10 +22,9 @@ $comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_a
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Articulo</title>
-    <!-- Bootstrap comentarios -->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<title>Articulo</title>
+
+
 
 </head>
 <body>
@@ -50,7 +49,7 @@ $comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_a
             <hr>
 
             <!-- Preview Image -->
-            <img class="img-fluid rounded" src=/<?= $model->imagen ?> alt="">
+            <img class="img-fluid rounded" src=<?= $img.$model->imagen ?> alt="Card image cap">
 
             <hr>
 

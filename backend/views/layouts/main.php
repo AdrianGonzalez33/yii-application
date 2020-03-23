@@ -18,7 +18,6 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
@@ -38,7 +37,8 @@ AppAsset::register($this);
     $menuItems = [
         ['label' => 'Blog', 'url' => ['articulo/index']],
         ['label' => 'Lista de usuarios', 'url' => ['user/usuarios']],
-        ['label' => 'Lista de Articulos', 'url' => ['articulo/articulos']],
+        ['label' => 'Lista de comentarios', 'url' => ['comentario/index']],
+        ['label' => 'Lista de articulos', 'url' => ['articulo/articulos']],
         ['label' => 'Crear Articulo', 'url' => ['articulo/create']],
     ];
     if (Yii::$app->user->isGuest) {
@@ -78,8 +78,9 @@ AppAsset::register($this);
 
 <?php $this->endBody() ?>
 </body>
+
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </html>
 <?php $this->endPage() ?>

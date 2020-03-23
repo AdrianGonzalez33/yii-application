@@ -13,6 +13,7 @@ use yii\data\ActiveDataProvider;
  * @property int $id_articulo
  * @property int $id_user
  * @property int|null $id_padre
+ * @property boolean $verificado
  * @property string $contenido_comentario
  * @property int|null $creado
  * @property int|null $modificado
@@ -50,6 +51,7 @@ class Comentario extends \yii\db\ActiveRecord {
             'id_articulo' => 'Id Articulo',
             'id_user' => 'Id User',
             'id_padre' => 'Id Padre',
+            'verificado'=> 'Verificado',
             'contenido_comentario' => 'Contenido Comentario',
             'creado' => 'Creado',
             'modificado' => 'Modificado',
