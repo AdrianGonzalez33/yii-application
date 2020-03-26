@@ -32,6 +32,14 @@ class Articulo extends ActiveRecord{
         return Yii::$app->db;
     }
 
+    public  function getCantidadArticulos($categoria){
+        $rows = (new \yii\db\Query())
+            ->count(['id', 'email'])
+            ->from('articulo')
+            ->where(['categoria' => $categoria])
+            ->all();
+        return $rows;
+    }
     /**
      * {@inheritdoc}
      */
@@ -71,6 +79,9 @@ class Articulo extends ActiveRecord{
     public function getId(){
         return $this->getPrimaryKey();
     }
+    /**
+     *
+     */
 
     public function scenarios(){
         // bypass scenarios() implementation in the parent class

@@ -5,6 +5,7 @@ namespace backend\controllers;
 
 use app\models\Buscador;
 use common\models\Articulo;
+use common\models\Categoria;
 use Yii;
 use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
@@ -13,11 +14,28 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Html;
 use yii\web\UploadedFile;
+use yii\widgets\Pjax;
 
 class ArticuloController extends Controller{
     public function actionPrueba(){
-        return $this->render("prueba");
+        $table = new Articulo();
+        $model = $table->find()->orderBy('creado')->all();
+        $categorias = Categoria::find()->select('nombre_categoria')->distinct()->indexBy('nombre_categoria')->column();
+        return $this->render("prueba", ["model" => $model, 'categorias' => $categorias ]);
     }
+
+    /**
+     * Muestra articulos al blog
+     *
+     * @return string
+     */
+    public function actionIndex(){
+        $table = new Articulo();
+        $model = $table->find()->all();
+        $categorias = Categoria::find()->select('nombre_categoria')->distinct()->indexBy('nombre_categoria')->column();
+        return $this->render("index", ["model" => $model, 'categorias' => $categorias ]);
+    }
+
     /**
      * Logout action.
      * @param integer $id
@@ -30,14 +48,6 @@ class ArticuloController extends Controller{
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    /**
-     * Devuelve todas las categorias distintas contenidas en la tabla articulos
-     * @return array
-     */
-    public function getCategorias(){
-        return Articulo::find()->select('categoria')->distinct()->indexBy('categoria')->column();
     }
 
     /**
@@ -55,17 +65,7 @@ class ArticuloController extends Controller{
         }
         return $this->render("index");
     }
-    /**
-     * Muestra articulos al blog
-     *
-     * @return string
-     */
-    public function actionIndex(){
-        $table = new Articulo();
-        $model = $table->find()->all();
-        $categorias = $this->getCategorias();
-        return $this->render("index", ["model" => $model, 'categorias' => $categorias ]);
-    }
+
     /**
      * Muestra los articulos en el blog que pertenecen a dicha categoria
      *
@@ -98,6 +98,10 @@ class ArticuloController extends Controller{
             }
         }
         return $this->render("articulos", ["model" => $model, "form" => $form, "search" => $search]);
+    }
+    public  function getCantidadArticulos($categoria){
+        $query = "SELECT COUNT(*) FROM articulo WHERE nombre_categoria LIKE '%$categoria%'";
+        return $query;
     }
     /**
      * Create Articulo.
@@ -176,8 +180,7 @@ class ArticuloController extends Controller{
             return $this->redirect(["articulos"]);
         }
     }
-    public function actions()
-    {
+    public function actions(){
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',

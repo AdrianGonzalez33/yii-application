@@ -18,6 +18,7 @@ class AppAsset extends AssetBundle
         'css/style',
     ];
     public $js = [
+        'js/popupCategoria.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -1,6 +1,12 @@
 <?php
+
+use yii\helpers\Html;
 use yii\helpers\Url;
+
+/* @var $this yii\web\View */
+
 $img = Url::to('@web/uploads/');
+$this->title = 'Blog';
 ?>
 
 <!DOCTYPE html>
@@ -13,25 +19,6 @@ $img = Url::to('@web/uploads/');
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <title>Callie HTML Template</title>
-
-    <!-- Google font -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700%7CMuli:400,700" rel="stylesheet">
-
-    <!-- Bootstrap -->
-    <link type="text/css" rel="stylesheet" href="../../web/css/bootstrap.min.css" />
-
-    <!-- Font Awesome Icon -->
-    <link rel="stylesheet" href="../../web/css/font-awesome.min.css">
-
-    <!-- Custom stlylesheet -->
-    <link type="text/css" rel="stylesheet" href="../../web/css/style.css" />
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
 </head>
 
@@ -401,84 +388,45 @@ $img = Url::to('@web/uploads/');
                 <div class="row">
                     <div class="col-md-12">
                         <div class="section-title">
-                            <h2 class="title">Recent posts</h2>
+                            <h2 class="title">Publicaciones recientes</h2>
                         </div>
                     </div>
                     <!-- post -->
+                    <?php
+                        $model2 = array_slice((array)$model, 0,3);
+                     ?>
+                    <?php foreach($model2 as $row): ?>
                     <div class="col-md-6">
                         <div class="post">
-                            <a class="post-img" href="blog-post.html"><img src="../../web/img/post-1.jpg" alt=""></a>
+                            <a class="post-img" href="blog-post.html"><img src=<?=$img.$row->imagen ?> alt=""></a>
                             <div class="post-body">
                                 <div class="post-category">
-                                    <a href="category.html">Travel</a>
+                                    <a href="category.html"><?=$row->categoria ?></a>
                                 </div>
-                                <h3 class="post-title"><a href="blog-post.html">Sed ut perspiciatis, unde omnis iste natus error sit</a></h3>
+                                <h3 class="post-title"><a href="blog-post.html"><?=$row->titulo ?></a></h3>
+                                <?php
+                                //limpiar código html
+                                $textoPlano = strip_tags($row->contenido);
+                                //acortar texto
+                                if(strlen($textoPlano) >= 200){
+                                    $resumen = substr($textoPlano,0,strrpos(substr($textoPlano,0,200)," "))."...";
+                                }else{
+                                    $resumen = $textoPlano;
+                                }
+                                ?>
+                                <p class="card-text"><?= $resumen?></p>
                                 <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
+                                    <li><a href="author.html"><?=$row->autor ?></a></li>
+                                    <li><?=Yii::$app->formatter->asDate($row->creado)?> a las <?=Yii::$app->formatter->asTime($row->creado)?></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <!-- /post -->
-
-                    <!-- post -->
-                    <div class="col-md-6">
-                        <div class="post">
-                            <a class="post-img" href="blog-post.html"><img src="../../web/img/post-2.jpg" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-category">
-                                    <a href="category.html">Technology</a>
-                                    <a href="category.html">Lifestyle</a>
-                                </div>
-                                <h3 class="post-title"><a href="blog-post.html">Ne bonorum praesent cum, labitur persequeris definitionem quo cu?</a></h3>
-                                <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach ?>
                     <!-- /post -->
 
                     <div class="clearfix visible-md visible-lg"></div>
 
-                    <!-- post -->
-                    <div class="col-md-6">
-                        <div class="post">
-                            <a class="post-img" href="blog-post.html"><img src="../../web/img/post-4.jpg" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-category">
-                                    <a href="category.html">Health</a>
-                                </div>
-                                <h3 class="post-title"><a href="blog-post.html">Postea senserit id eos, vivendo periculis ei qui</a></h3>
-                                <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /post -->
-
-                    <!-- post -->
-                    <div class="col-md-6">
-                        <div class="post">
-                            <a class="post-img" href="blog-post.html"><img src="../../web/img/post-7.jpg" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-category">
-                                    <a href="category.html">Health</a>
-                                    <a href="category.html">Lifestyle</a>
-                                </div>
-                                <h3 class="post-title"><a href="blog-post.html">Sed ut perspiciatis, unde omnis iste natus error sit</a></h3>
-                                <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /post -->
                 </div>
                 <!-- /row -->
 
@@ -716,15 +664,14 @@ $img = Url::to('@web/uploads/');
                 <!-- category widget -->
                 <div class="aside-widget">
                     <div class="section-title">
-                        <h2 class="title">Categories</h2>
+                        <h2 class="title">Categorías</h2>
                     </div>
                     <div class="category-widget">
                         <ul>
-                            <li><a href="#">Lifestyle <span>451</span></a></li>
-                            <li><a href="#">Fashion <span>230</span></a></li>
-                            <li><a href="#">Technology <span>40</span></a></li>
-                            <li><a href="#">Travel <span>38</span></a></li>
-                            <li><a href="#">Health <span>24</span></a></li>
+                            <li><a href="http://backend.test/articulo/prueba">Todos <span>451</span></a></li>
+                            <?php foreach($categorias as $categoria):?>
+                                <li><a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $categoria]) ?>"><?=$categoria?> <span><?= 1  ?> </span></a></li>
+                            <?php endforeach ?>
                         </ul>
                     </div>
                 </div>
@@ -1249,12 +1196,4 @@ $img = Url::to('@web/uploads/');
 </footer>
 <!-- /FOOTER -->
 
-<!-- jQuery Plugins -->
-<script src="../../web/js/jquery.min.js"></script>
-<script src="../../web/js/bootstrap.min.js"></script>
-<script src="../../web/js/jquery.stellar.min.js"></script>
-<script src="../../web/js/main.js"></script>
-
 </body>
-
-

@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\widgets\Pjax;
 
 /**
  * ComentarioController implements the CRUD actions for Comentario model.
