@@ -1,6 +1,4 @@
 <?php
-
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -10,7 +8,7 @@ $this->title = 'Blog';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -41,7 +39,7 @@ $this->title = 'Blog';
 
                 <!-- logo -->
                 <div class="nav-logo">
-                    <a href="index.html" class="logo"><img src="../../web/img/logo.png" alt=""></a>
+                    <a href="http://backend.test/articulo/prueba" class="logo"><img src=<?=$img."../img/logo.png"?> alt=""></a>
                 </div>
                 <!-- /logo -->
 
@@ -69,16 +67,16 @@ $this->title = 'Blog';
                 <!-- nav -->
                 <ul class="nav-menu">
                     <li class="has-dropdown">
-                        <a href="index.html">Home</a>
+                        <a href="http://backend.test/articulo/prueba">Home</a>
                         <div class="dropdown">
                             <div class="dropdown-body">
                                 <ul class="dropdown-list">
-                                    <li><a href="category.html">Category page</a></li>
-                                    <li><a href="blog-post.html">Post page</a></li>
-                                    <li><a href="author.html">Author page</a></li>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="contact.html">Contacts</a></li>
-                                    <li><a href="blank.html">Regular</a></li>
+                                    <li><a href="http://backend.test/articulo/prueba">Category page</a></li>
+                                    <li><a href="http://backend.test/articulo/prueba">Post page</a></li>
+                                    <li><a href="http://backend.test/articulo/prueba">Author page</a></li>
+                                    <li><a href="http://backend.test/articulo/prueba">About Us</a></li>
+                                    <li><a href="http://backend.test/articulo/prueba">Contacts</a></li>
+                                    <li><a href="http://backend.test/articulo/prueba">Regular</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -103,7 +101,7 @@ $this->title = 'Blog';
                                                 <!-- post -->
                                                 <div class="col-md-4">
                                                     <div class="post post-sm">
-                                                        <a class="post-img" href="blog-post.html"><img src="../../web/img/post-10.jpg" alt=""></a>
+                                                        <a class="post-img" href="blog-post.html"><img src="<?=$img."../img/post-10.jpg"?>alt=""></a>
                                                         <div class="post-body">
                                                             <div class="post-category">
                                                                 <a href="category.html">Travel</a>
@@ -291,7 +289,7 @@ $this->title = 'Blog';
         <!-- Aside Nav -->
         <div id="nav-aside">
             <ul class="nav-aside-menu">
-                <li><a href="index.html">Home</a></li>
+                <li><a href="http://backend.test/articulo/prueba">Home</a></li>
                 <li class="has-dropdown"><a>Categories</a>
                     <ul class="dropdown">
                         <li><a href="#">Lifestyle</a></li>
@@ -301,7 +299,7 @@ $this->title = 'Blog';
                         <li><a href="#">Health</a></li>
                     </ul>
                 </li>
-                <li><a href="about.html">About Us</a></li>
+                <li><a href="https://www.recordrentacar.com/es/recordgo-contacto/">Atención al cliente</a></li>
                 <li><a href="contact.html">Contacts</a></li>
                 <li><a href="#">Advertise</a></li>
             </ul>
@@ -393,7 +391,7 @@ $this->title = 'Blog';
                     </div>
                     <!-- post -->
                     <?php
-                        $model2 = array_slice((array)$model, 0,3);
+                        $model2 = array_slice((array)$model, 0,4);
                      ?>
                     <?php foreach($model2 as $row): ?>
                     <div class="col-md-6">
@@ -431,21 +429,24 @@ $this->title = 'Blog';
                 <!-- /row -->
 
                 <!-- row -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="section-title">
-                            <h2 class="title">Lifestyle</h2>
+                <?php foreach ($articulosPorCategorias as $nombreCategoria => $articulos) {?>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="section-title">
+                                <h2 class="title"><?=$nombreCategoria?></h2>
+                            </div>
                         </div>
-                    </div>
+                <?php $model3 = array_slice((array) $articulos, 0,3);?>
+                    <?php foreach($model3 as $row): ?>
                     <!-- post -->
                     <div class="col-md-4">
                         <div class="post post-sm">
-                            <a class="post-img" href="blog-post.html"><img src="./img/post-9.jpg" alt=""></a>
+                            <a class="post-img" href="blog-post.html"><img src=<?=$img.$row->imagen ?> alt=""></a>
                             <div class="post-body">
                                 <div class="post-category">
-                                    <a href="category.html">Lifestyle</a>
+                                    <a href="category.html"><?=$row->categoria?></a>
                                 </div>
-                                <h3 class="post-title title-sm"><a href="blog-post.html">Mel ut impetus suscipit tincidunt. Cum id ullum laboramus persequeris.</a></h3>
+                                <h3 class="post-title title-sm"><a href="blog-post.html"><?=$row->titulo?></a></h3>
                                 <ul class="post-meta">
                                     <li><a href="author.html">John Doe</a></li>
                                     <li>20 April 2018</li>
@@ -453,174 +454,12 @@ $this->title = 'Blog';
                             </div>
                         </div>
                     </div>
-                    <!-- /post -->
-
-                    <!-- post -->
-                    <div class="col-md-4">
-                        <div class="post post-sm">
-                            <a class="post-img" href="blog-post.html"><img src="./img/post-8.jpg" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-category">
-                                    <a href="category.html">Fashion</a>
-                                    <a href="category.html">Lifestyle</a>
-                                </div>
-                                <h3 class="post-title title-sm"><a href="blog-post.html">Postea senserit id eos, vivendo periculis ei qui</a></h3>
-                                <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /post -->
-
-                    <!-- post -->
-                    <div class="col-md-4">
-                        <div class="post post-sm">
-                            <a class="post-img" href="blog-post.html"><img src="./img/post-11.jpg" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-category">
-                                    <a href="category.html">Technology</a>
-                                </div>
-                                <h3 class="post-title title-sm"><a href="blog-post.html">Sed ut perspiciatis, unde omnis iste natus error sit</a></h3>
-                                <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach ?>
                     <!-- /post -->
                 </div>
                 <!-- /row -->
+                <?php  }?>
 
-                <!-- row -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="section-title">
-                            <h2 class="title">Fashion & Travel</h2>
-                        </div>
-                    </div>
-                    <!-- post -->
-                    <div class="col-md-4">
-                        <div class="post post-sm">
-                            <a class="post-img" href="blog-post.html"><img src="./img/post-10.jpg" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-category">
-                                    <a href="category.html">Travel</a>
-                                </div>
-                                <h3 class="post-title title-sm"><a href="blog-post.html">Ne bonorum praesent cum, labitur persequeris definitionem quo cu?</a></h3>
-                                <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /post -->
-
-                    <!-- post -->
-                    <div class="col-md-4">
-                        <div class="post post-sm">
-                            <a class="post-img" href="blog-post.html"><img src="./img/post-12.jpg" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-category">
-                                    <a href="category.html">Lifestyle</a>
-                                </div>
-                                <h3 class="post-title title-sm"><a href="blog-post.html">Sed ut perspiciatis, unde omnis iste natus error sit</a></h3>
-                                <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /post -->
-
-                    <!-- post -->
-                    <div class="col-md-4">
-                        <h1>AQUIIIIII</h1>
-                        <div class="post post-sm">
-                            <a class="post-img" href="blog-post.html"><img src="<?=$img."13.jpg"  ?>" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-category">
-                                    <a href="category.html">Travel</a>
-                                    <a href="category.html">Lifestyle</a>
-                                </div>
-                                <h3 class="post-title title-sm"><a href="blog-post.html">Mel ut impetus suscipit tincidunt. Cum id ullum laboramus persequeris.</a></h3>
-                                <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /post -->
-                </div>
-                <!-- /row -->
-
-                <!-- row -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="section-title">
-                            <h2 class="title">Technology & Health</h2>
-                        </div>
-                    </div>
-                    <!-- post -->
-                    <div class="col-md-4">
-                        <div class="post post-sm">
-                            <a class="post-img" href="blog-post.html"><img src="./img/post-4.jpg" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-category">
-                                    <a href="category.html">Health</a>
-                                </div>
-                                <h3 class="post-title title-sm"><a href="blog-post.html">Postea senserit id eos, vivendo periculis ei qui</a></h3>
-                                <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /post -->
-
-                    <!-- post -->
-                    <div class="col-md-4">
-                        <div class="post post-sm">
-                            <a class="post-img" href="blog-post.html"><img src="./img/post-1.jpg" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-category">
-                                    <a href="category.html">Travel</a>
-                                </div>
-                                <h3 class="post-title title-sm"><a href="blog-post.html">Mel ut impetus suscipit tincidunt. Cum id ullum laboramus persequeris.</a></h3>
-                                <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /post -->
-
-                    <!-- post -->
-                    <div class="col-md-4">
-                        <div class="post post-sm">
-                            <a class="post-img" href="blog-post.html"><img src="./img/post-3.jpg" alt=""></a>
-                            <div class="post-body">
-                                <div class="post-category">
-                                    <a href="category.html">Lifestyle</a>
-                                </div>
-                                <h3 class="post-title title-sm"><a href="blog-post.html">Ne bonorum praesent cum, labitur persequeris definitionem quo cu?</a></h3>
-                                <ul class="post-meta">
-                                    <li><a href="author.html">John Doe</a></li>
-                                    <li>20 April 2018</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /post -->
-                </div>
-                <!-- /row -->
             </div>
             <div class="col-md-4">
                 <!-- ad widget-->
@@ -668,10 +507,10 @@ $this->title = 'Blog';
                     </div>
                     <div class="category-widget">
                         <ul>
-                            <li><a href="http://backend.test/articulo/prueba">Todos <span>451</span></a></li>
-                            <?php foreach($categorias as $categoria):?>
-                                <li><a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $categoria]) ?>"><?=$categoria?> <span><?= 1  ?> </span></a></li>
-                            <?php endforeach ?>
+                            <li><a href="http://backend.test/articulo/prueba">Todos <span><?=$cantidadArticulos?></span></a></li>
+                            <?php foreach($categorias as $nombreCategoria => $cantidad){?>
+                                <li><a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $nombreCategoria]) ?>"><?=$nombreCategoria?> <span><?= $cantidad ?> </span></a></li>
+                            <?php }  ?>
                         </ul>
                     </div>
                 </div>

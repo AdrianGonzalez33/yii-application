@@ -14,14 +14,25 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Html;
 use yii\web\UploadedFile;
-use yii\widgets\Pjax;
 
 class ArticuloController extends Controller{
+
     public function actionPrueba(){
         $table = new Articulo();
-        $model = $table->find()->orderBy('creado')->all();
-        $categorias = Categoria::find()->select('nombre_categoria')->distinct()->indexBy('nombre_categoria')->column();
-        return $this->render("prueba", ["model" => $model, 'categorias' => $categorias ]);
+        $cadena="";
+        $model = $table->find()->orderBy('creado DESC')->all();
+        $cantidadArticulos = Articulo::find()->count('*');
+        $categorias = Categoria::find()->select('nombre_categoria')->distinct()->orderBy('nombre_categoria ASC')->indexBy('nombre_categoria')->column();
+        foreach($categorias as $Categoria=> $nombreCategoria){
+            $categorias[$Categoria]= Articulo::find()->select('nombre_categoria')->where(['categoria' => $nombreCategoria])->count('*');
+        }
+
+        $articulosPorCategorias = array();
+        $categorias2 = Categoria::find()->select('nombre_categoria')->distinct()->orderBy('nombre_categoria ASC')->indexBy('nombre_categoria')->column();
+        foreach($categorias2 as $Categoria=> $nombreCategoria) {
+            $articulosPorCategorias[$Categoria] = Articulo::find()->where(['categoria' => $nombreCategoria])->orderBy('creado DESC')->all();
+        }
+        return $this->render("prueba", ["model" => $model, 'categorias' => $categorias, 'cantidadArticulos'=>$cantidadArticulos,'articulosPorCategorias'=>$articulosPorCategorias]);
     }
 
     /**
@@ -30,8 +41,10 @@ class ArticuloController extends Controller{
      * @return string
      */
     public function actionIndex(){
+        //$sql="select * from tablename where columnname != NULL";
+        //Yii::app()->db->createCommand($sql)->queryAll();
         $table = new Articulo();
-        $model = $table->find()->all();
+        $model = $table->find()->orderBy('creado')->all();
         $categorias = Categoria::find()->select('nombre_categoria')->distinct()->indexBy('nombre_categoria')->column();
         return $this->render("index", ["model" => $model, 'categorias' => $categorias ]);
     }
