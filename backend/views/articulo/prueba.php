@@ -396,12 +396,12 @@ $this->title = 'Blog';
                     <?php foreach($model2 as $row): ?>
                     <div class="col-md-6">
                         <div class="post">
-                            <a class="post-img" href="blog-post.html"><img src=<?=$img.$row->imagen ?> alt=""></a>
+                            <a class="post-img" href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo]) ?>"><img src=<?=$img.$row->imagen ?> alt=""></a>
                             <div class="post-body">
                                 <div class="post-category">
-                                    <a href="category.html"><?=$row->categoria ?></a>
+                                    <a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $row->categoria])?>"><?=$row->categoria ?></a>
                                 </div>
-                                <h3 class="post-title"><a href="blog-post.html"><?=$row->titulo ?></a></h3>
+                                <h3 class="post-title"><a href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo])?>"><?=$row->titulo ?></a></h3>
                                 <?php
                                 //limpiar código html
                                 $textoPlano = strip_tags($row->contenido);
@@ -441,12 +441,12 @@ $this->title = 'Blog';
                     <!-- post -->
                     <div class="col-md-4">
                         <div class="post post-sm">
-                            <a class="post-img" href="blog-post.html"><img src=<?=$img.$row->imagen ?> alt=""></a>
+                            <a class="post-img" href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo])?>"><img src=<?=$img.$row->imagen ?> alt=""></a>
                             <div class="post-body">
                                 <div class="post-category">
-                                    <a href="category.html"><?=$row->categoria?></a>
+                                    <a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $row->categoria ]) ?>"><?=$row->categoria?></a>
                                 </div>
-                                <h3 class="post-title title-sm"><a href="blog-post.html"><?=$row->titulo?></a></h3>
+                                <h3 class="post-title title-sm"><a href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo])?>"><?=$row->titulo?></a></h3>
                                 <ul class="post-meta">
                                     <li><a href="author.html">John Doe</a></li>
                                     <li>20 April 2018</li>
