@@ -100,9 +100,9 @@ AppAsset::register($this);
 <?php $this->endBody() ?>
 </body>
 <!-- jQuery Plugins -->
-<script src="../../web/js/jquery.min.js"></script>
+<!--<script src="../../web/js/jquery.min.js"></script>-->
 <script src="../../web/js/bootstrap.min.js"></script>
-<script src="../../web/js/jquery.stellar.min.js"></script>
+<!--<script src="../../web/js/jquery.stellar.min.js"></script>-->
 <script src="../../web/js/main.js"></script>
 
 </html>

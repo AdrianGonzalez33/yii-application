@@ -300,7 +300,6 @@ $this->title = 'Blog';
                     </ul>
                 </li>
                 <li><a href="https://www.recordrentacar.com/es/recordgo-contacto/">Atención al cliente</a></li>
-                <li><a href="contact.html">Contacts</a></li>
                 <li><a href="#">Advertise</a></li>
             </ul>
             <button class="nav-close nav-aside-close"><span></span></button>
@@ -316,22 +315,31 @@ $this->title = 'Blog';
     <!-- container -->
     <div class="container">
         <!-- row -->
+
+        <!-- post ultimos 3 populares-->
         <div id="hot-post" class="row hot-post">
             <div class="col-md-8 hot-post-left">
-                <!-- post -->
-                <div class="post post-thumb">
-                    <a class="post-img" href="blog-post.html"><img src="../../web/img/hot-post-1.jpg" alt=""></a>
-                    <div class="post-body">
-                        <div class="post-category">
-                            <a href="category.html">Lifestyle</a>
+                <?php
+                $populares = array_slice((array) $articulosPopulares, 0,3);
+                ?>
+                <?php
+                if(count($populares) > 0 ){
+                    echo
+                    ' <div class="post post-thumb">
+                        <a class="post-img" href="blog-post.html"><img src='.$img.$populares[0]->imagen.' alt=""></a>
+                        <div class="post-body">
+                            <div class="post-category">
+                                <a href="category.html">'.$populares[0]->categoria.'</a>
+                            </div>
+                            <h3 class="post-title title-lg"><a href="blog-post.html"> '.$populares[0]->titulo.' </a></h3>
+                            <ul class="post-meta">
+                                <li><a href="author.html">John Doe</a></li>
+                                <li>20 April 2018</li>
+                            </ul>
                         </div>
-                        <h3 class="post-title title-lg"><a href="blog-post.html">Postea senserit id eos, vivendo periculis ei qui</a></h3>
-                        <ul class="post-meta">
-                            <li><a href="author.html">John Doe</a></li>
-                            <li>20 April 2018</li>
-                        </ul>
-                    </div>
-                </div>
+                    </div>';
+                }?>
+
                 <!-- /post -->
             </div>
             <div class="col-md-4 hot-post-right">

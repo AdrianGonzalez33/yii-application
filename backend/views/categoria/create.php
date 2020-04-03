@@ -1,6 +1,6 @@
 <?php
 use yii\widgets\ActiveForm;
-use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 $this->title = 'crear categoria';
 ?>

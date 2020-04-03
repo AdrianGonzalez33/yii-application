@@ -19,20 +19,26 @@ class ArticuloController extends Controller{
 
     public function actionPrueba(){
         $table = new Articulo();
-        $cadena="";
+        //<------------   todos los articulos ---------->
         $model = $table->find()->orderBy('creado DESC')->all();
+
+        //<------------   cantidad total de articulos  ---------->
         $cantidadArticulos = Articulo::find()->count('*');
+        $articulosPopulares = $table->find()->where(['popular' => true ])->orderBy('creado DESC')->all();
+
+        //<------------   cantidad de articulos por categoria ---------->
         $categorias = Categoria::find()->select('nombre_categoria')->distinct()->orderBy('nombre_categoria ASC')->indexBy('nombre_categoria')->column();
         foreach($categorias as $Categoria=> $nombreCategoria){
             $categorias[$Categoria]= Articulo::find()->select('nombre_categoria')->where(['categoria' => $nombreCategoria])->count('*');
         }
-
+        //<------------  map Key categoria value array de articulos ---------->
         $articulosPorCategorias = array();
         $categorias2 = Categoria::find()->select('nombre_categoria')->distinct()->orderBy('nombre_categoria ASC')->indexBy('nombre_categoria')->column();
         foreach($categorias2 as $Categoria=> $nombreCategoria) {
             $articulosPorCategorias[$Categoria] = Articulo::find()->where(['categoria' => $nombreCategoria])->orderBy('creado DESC')->all();
         }
-        return $this->render("prueba", ["model" => $model, 'categorias' => $categorias, 'cantidadArticulos'=>$cantidadArticulos,'articulosPorCategorias'=>$articulosPorCategorias]);
+        return $this->render("prueba", ["model" => $model, "articulosPopulares"=>$articulosPopulares, 'categorias' => $categorias, 'cantidadArticulos'=>$cantidadArticulos,
+            'articulosPorCategorias'=>$articulosPorCategorias]);
     }
 
     /**
@@ -41,8 +47,6 @@ class ArticuloController extends Controller{
      * @return string
      */
     public function actionIndex(){
-        //$sql="select * from tablename where columnname != NULL";
-        //Yii::app()->db->createCommand($sql)->queryAll();
         $table = new Articulo();
         $model = $table->find()->orderBy('creado')->all();
         $categorias = Categoria::find()->select('nombre_categoria')->distinct()->indexBy('nombre_categoria')->column();
@@ -100,6 +104,15 @@ class ArticuloController extends Controller{
         $model = $table->find()->all(); //carga todos los articulos
         $form = new Buscador();
         $search = null;
+
+        if(Yii::$app->request->post()){
+            $articulo = $this->findModel( (int) Html::encode($_POST["checkId"]));
+            $valor = ($articulo->popular ? false : true);
+            $articulo->popular = $valor;
+            $articulo->save(false);
+            $model = $table->find()->all();
+
+        }
         if ($form->load(Yii::$app->request->get())) {
             if ($form->validate()) {
                 $search = Html::encode($form->busqueda);
@@ -112,10 +125,12 @@ class ArticuloController extends Controller{
         }
         return $this->render("articulos", ["model" => $model, "form" => $form, "search" => $search]);
     }
+
     public  function getCantidadArticulos($categoria){
         $query = "SELECT COUNT(*) FROM articulo WHERE nombre_categoria LIKE '%$categoria%'";
         return $query;
     }
+
     /**
      * Create Articulo.
      *
@@ -123,8 +138,6 @@ class ArticuloController extends Controller{
      */
     public function actionCreate(){
         $model = new Articulo();
-        $form = new Buscador();
-        $search = null;
         if ($model->load(Yii::$app->request->post())){
             $model->archivo = UploadedFile::getInstance($model,'archivo');
             if ($model->validate()){
@@ -133,9 +146,7 @@ class ArticuloController extends Controller{
                 $model->archivo->saveAs('uploads/'.$nombreFichero.".".$model->archivo->extension, false);
                 $model->imagen = $nombreFichero.".".$model->archivo->extension;
                 $model->save();
-                $model = $model->find()->all();
-                return $this->render("articulos", ["model" => $model, "form" => $form, "search" => $search]);
-
+                $this->actionArticulos();
             }else{
                 $model->getErrors();
             }
@@ -151,8 +162,6 @@ class ArticuloController extends Controller{
      * @throws NotFoundHttpException
      */
     public function actionEdit(){
-        $form = new Buscador();
-        $search = null;
         if(Yii::$app->request->get()){
         $id_articulo =Html::encode($_GET["id"]);
         $model = $this->findModel($id_articulo);
@@ -164,9 +173,7 @@ class ArticuloController extends Controller{
                     $model->archivo->saveAs('uploads/' . $nombreFichero . "." . $model->archivo->extension, false);
                     $model->imagen = $nombreFichero . "." . $model->archivo->extension;
                     $model->save();
-                    $model = $model->find()->all();
-                    return $this->render("articulos", ["model" => $model, "form" => $form, "search" => $search]);
-
+                    $this->actionArticulos();
                 } else {
                     $model->getErrors();
                 }

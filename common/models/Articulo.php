@@ -16,6 +16,7 @@ use yii\db\ActiveRecord;
  * @property string $autor
  * @property string $imagen
  * @property string $categoria
+ * @property boolean $popular
  * @property int $creado
  * @property int $modificado
  */
@@ -32,14 +33,6 @@ class Articulo extends ActiveRecord{
         return Yii::$app->db;
     }
 
-    public  function getCantidadArticulos($categoria){
-        $rows = (new \yii\db\Query())
-            ->count(['id', 'email'])
-            ->from('articulo')
-            ->where(['categoria' => $categoria])
-            ->all();
-        return $rows;
-    }
     /**
      * {@inheritdoc}
      */
@@ -52,6 +45,7 @@ class Articulo extends ActiveRecord{
             [['autor', 'categoria'], 'string', 'max' => 50],
             [['imagen'], 'string', 'max' => 250],
             [['contenido'], 'string'],
+            [['popular'], 'boolean'],
             [['archivo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxSize' => 1024*1024*10, 'tooBig' => 'El límite son 10MB'],
             [['titulo', 'contenido', 'autor', 'archivo', 'categoria'], 'safe'],
 
@@ -70,6 +64,7 @@ class Articulo extends ActiveRecord{
             'categoria' => 'Categoria',
             'creado' => 'Creado',
             'modificado' => 'Modificado',
+            'popular' => 'Popular',
         ];
     }
 
@@ -121,7 +116,8 @@ class Articulo extends ActiveRecord{
             ->andFilterWhere(['like', 'imagen', $this->imagen])
             ->andFilterWhere(['like', 'categoria', $this->categoria])
             ->andFilterWhere(['like', 'creado', $this->creado])
-            ->andFilterWhere(['like', 'modificado', $this->modificado]);
+            ->andFilterWhere(['like', 'modificado', $this->modificado])
+            ->andFilterWhere(['like', 'popular', $this->popular]);
 
         return $dataProvider;
     }

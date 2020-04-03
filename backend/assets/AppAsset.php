@@ -18,14 +18,14 @@ class AppAsset extends AssetBundle
         'css/style.css',
     ];
     public $js = [
-        'js/bootstrap.min.js',
-        'js/contact_me.js',
-        'js/jqBootstrapValidation.js',
-        'js/jquery.min.js',
-        'js/jquery.stellar.min.js',
-        'js/main.js',
         'js/popupCategoria.js',
-
+        'js/checkUpdate.js',
+//        'js/bootstrap.min.js',
+//        'js/contact_me.js',
+        'js/jqBootstrapValidation.js',
+//        'js/jquery.min.js',
+//        'js/jquery.stellar.min.js',
+        'js/main.js',
 
     ];
     public $depends = [

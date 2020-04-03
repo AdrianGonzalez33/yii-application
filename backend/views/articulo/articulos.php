@@ -8,15 +8,17 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'Lista de Articulos';
 ?>
+
 <div class="container">
     <!--buscador -->
     <?php $formularioBusqueda = ActiveForm::begin([
-        "method" => "get",
-        "action" => Url::toRoute("articulo/articulos"),
-        "enableClientValidation" => true,
+        'method' => "get",
+        'enableClientValidation' => true,
+        'action' => Url::toRoute("articulo/articulos"),
     ]);
 
     ?>
+
     <h3>Lista de Artículos</h3>
     <!--buscador -->
         <div class="card my-4">
@@ -31,7 +33,6 @@ $this->title = 'Lista de Articulos';
             </div>
         </div>
 
-
     <?php $formularioBusqueda->end() ?>
     <!--tabla articulos -->
     <table class="table table-striped table-bordered">
@@ -41,9 +42,12 @@ $this->title = 'Lista de Articulos';
             <th>categoría</th>
             <th>autor</th>
             <th>contenido</th>
+            <th>popular</th>
             <th></th>
             <th></th>
         </tr>
+
+        <!--setea los datos-->
         <?php foreach($model as $row): ?>
             <tr>
                 <td><?= $row->id_articulo ?></td>
@@ -60,6 +64,20 @@ $this->title = 'Lista de Articulos';
                 }
                 ?>
                 <td><?=$resumen?></td>
+
+                <!--actualiza popular-->
+                <?= Html::beginForm(['articulo/articulos'], 'post', ['id' => 'formCheck']) ?>
+                <?= Html::hiddenInput('checkId')?>
+                <?php
+                if($row->popular) {
+                    echo"<td><input type='checkbox' id='myCheck' value='$row->id_articulo' onclick='checkUpdate(this)' checked ></td>";
+                }else {
+                    echo"<td><input type='checkbox' id='myCheck' value='$row->id_articulo' onclick='checkUpdate(this)' ></td>";
+                }
+                ?>
+                <?= Html::endForm() ?>
+
+                <!--editar y eliminar articulos-->
                 <td><a href="<?= Url::toRoute(["articulo/edit/", "id" => $row->id_articulo]) ?>">Editar</a></td>
                 <td><a href="#" data-toggle="modal" data-target="#id_articulo<?= $row->id_articulo ?>">Eliminar</a>
                     <div class="modal fade" role="dialog" aria-hidden="true" id="id_articulo<?= $row->id_articulo ?>">
@@ -88,3 +106,11 @@ $this->title = 'Lista de Articulos';
     </table>
     </div>
 </div>
+
+<script>
+    function checkUpdate(mycheck){
+        console.log(mycheck.value);
+        document.getElementsByName("checkId")[0].value= mycheck.value;
+        document.getElementById("formCheck").submit();
+    }
+</script>
