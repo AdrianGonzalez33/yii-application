@@ -6,6 +6,7 @@ namespace backend\controllers;
 use app\models\Buscador;
 use common\models\Articulo;
 use common\models\Categoria;
+use common\models\Comentario;
 use Yii;
 use yii\db\StaleObjectException;
 use yii\filters\AccessControl;
@@ -17,7 +18,7 @@ use yii\web\UploadedFile;
 
 class ArticuloController extends Controller{
 
-    public function actionPrueba(){
+    public function actionIndex(){
         $table = new Articulo();
         //<------------   todos los articulos ---------->
         $model = $table->find()->orderBy('creado DESC')->all();
@@ -37,20 +38,19 @@ class ArticuloController extends Controller{
         foreach($categorias2 as $Categoria=> $nombreCategoria) {
             $articulosPorCategorias[$Categoria] = Articulo::find()->where(['categoria' => $nombreCategoria])->orderBy('creado DESC')->all();
         }
-        return $this->render("prueba", ["model" => $model, "articulosPopulares"=>$articulosPopulares, 'categorias' => $categorias, 'cantidadArticulos'=>$cantidadArticulos,
+        return $this->render("index", ["model" => $model, "articulosPopulares"=>$articulosPopulares, 'categorias' => $categorias, 'cantidadArticulos'=>$cantidadArticulos,
             'articulosPorCategorias'=>$articulosPorCategorias]);
     }
 
     /**
      * Muestra articulos al blog
-     *
      * @return string
      */
-    public function actionIndex(){
+    public function actionAntigua(){
         $table = new Articulo();
         $model = $table->find()->orderBy('creado')->all();
         $categorias = Categoria::find()->select('nombre_categoria')->distinct()->indexBy('nombre_categoria')->column();
-        return $this->render("index", ["model" => $model, 'categorias' => $categorias ]);
+        return $this->render("antigua", ["model" => $model, 'categorias' => $categorias ]);
     }
 
     /**
@@ -69,7 +69,6 @@ class ArticuloController extends Controller{
 
     /**
      * Displays el articulo en post.
-     *
      * @return string
      * @throws NotFoundHttpException
      */
@@ -78,14 +77,14 @@ class ArticuloController extends Controller{
         if(Yii::$app->request->get()){
             $id_articulo =Html::encode($_GET["id"]);
             $model = $this->findModel($id_articulo);
-            return $this->render("post",[ "model" => $model]);
+            $comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_articulo' =>  $model->id_articulo])->all();
+            return $this->render("post",["model" => $model , 'comentarios' => $comentarios]);
         }
         return $this->render("index");
     }
 
     /**
      * Muestra los articulos en el blog que pertenecen a dicha categoria
-     *
      * @return string
      */
     public function actionCategory(){
@@ -94,10 +93,12 @@ class ArticuloController extends Controller{
         $model = Articulo::find()->select('*')->from('articulo')->where(['categoria' => $categoria])->all();
         return $this->render("category", ["model" => $model, "categoria"=>$categoria]);
     }
+
     /**
      * Carga la tabla con los articulos en listaArticulos.
      *
      * @return string
+     * @throws NotFoundHttpException
      */
     public function actionArticulos(){
         $table = new Articulo();
@@ -137,6 +138,8 @@ class ArticuloController extends Controller{
      * @return string
      */
     public function actionCreate(){
+        $form = new Buscador();
+        $search = null;
         $model = new Articulo();
         if ($model->load(Yii::$app->request->post())){
             $model->archivo = UploadedFile::getInstance($model,'archivo');
@@ -146,7 +149,8 @@ class ArticuloController extends Controller{
                 $model->archivo->saveAs('uploads/'.$nombreFichero.".".$model->archivo->extension, false);
                 $model->imagen = $nombreFichero.".".$model->archivo->extension;
                 $model->save();
-                $this->actionArticulos();
+                $table = $model->find()->all();
+                return $this->render("articulos", ["model" => $table, "form" => $form, "search" => $search]);
             }else{
                 $model->getErrors();
             }
@@ -162,6 +166,8 @@ class ArticuloController extends Controller{
      * @throws NotFoundHttpException
      */
     public function actionEdit(){
+        $form = new Buscador();
+        $search = null;
         if(Yii::$app->request->get()){
         $id_articulo =Html::encode($_GET["id"]);
         $model = $this->findModel($id_articulo);
@@ -173,7 +179,8 @@ class ArticuloController extends Controller{
                     $model->archivo->saveAs('uploads/' . $nombreFichero . "." . $model->archivo->extension, false);
                     $model->imagen = $nombreFichero . "." . $model->archivo->extension;
                     $model->save();
-                    $this->actionArticulos();
+                    $table = $model->find()->all();
+                    return $this->render("articulos", ["model" => $table, "form" => $form, "search" => $search]);
                 } else {
                     $model->getErrors();
                 }
@@ -213,11 +220,11 @@ class ArticuloController extends Controller{
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error','index','category', 'post','prueba'], //solo permitidos sin logear
+                        'actions' => ['login', 'error','index','category', 'post','antigua'], //solo permitidos sin logear
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'articulos','create', 'edit','prueba' ], //permitidos logeados
+                        'actions' => ['logout', 'articulos','create', 'edit','antigua' ], //permitidos logeados
                         'allow' => true,
                         'roles' => ['@'],
                     ],

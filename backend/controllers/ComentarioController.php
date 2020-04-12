@@ -2,13 +2,14 @@
 
 namespace backend\controllers;
 
+use app\models\Buscador;
 use Yii;
 use common\models\Comentario;
+use yii\db\StaleObjectException;
 use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\widgets\Pjax;
 
 /**
  * ComentarioController implements the CRUD actions for Comentario model.
@@ -33,13 +34,30 @@ class ComentarioController extends Controller{
      * @return mixed
      */
     public function actionIndex(){
-        $searchModel = new Comentario();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $table = new Comentario();
+        $model = $table->find()->all(); //carga todos los articulos
+        $form = new Buscador();
+        $search = null;
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        if(Yii::$app->request->post()){
+            $comentario = $this->findModel( (int) Html::encode($_POST["checkId"]));
+            $valor = ($comentario->verificado ? false : true);
+            $comentario->verificado = $valor;
+            $comentario->save(false);
+            $model = $table->find()->all();
+        }
+
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $search = Html::encode($form->busqueda);
+                $query = "SELECT * FROM comentario WHERE id_comentario LIKE '%$search%' OR ";
+                $query .= "id_user LIKE '%$search%' OR verificado LIKE '%$search%'";
+                $model = $table->findBySql($query)->all();
+            } else {
+                $form->getErrors();
+            }
+        }
+        return $this->render("index", ["model" => $model, "form" => $form, "search" => $search]);
     }
 
     /**
@@ -62,17 +80,19 @@ class ComentarioController extends Controller{
     public function actionCreate(){
         $model = new Comentario();
         if(Yii::$app->request->post()){
+            $enviado=false;
             $model->id_articulo = Html::encode($_POST["id_articulo"]);
             $model->id_user = Html::encode($_POST["id_user"]);
             $model->contenido_comentario = Html::encode($_POST["contenido_comentario"]);
             $model->creado = time();
-            $model->save();
-            $comentarios = Comentario::find()->select('*')->from('comentario')->where(['id_articulo' =>  $model->id_articulo])->all();
-            return $this->redirect(['/articulo/post/'.$model->id_articulo,'comentarios' => $comentarios]);
+            if($model->save()){
+                $enviado = true;}
+            Yii::$app->response->redirect(['../../articulo/post/'.$model->id_articulo, "enviado"=>$enviado]);
+//            return $this->renderAjax('../../articulo/post/'.$model->id_articulo, ["enviado"=>$enviado]);
         }else{
             $model->getErrors();
         }
-        return $this->redirect('/articulo/index');
+
     }
     /**
      * Updates an existing Comentario model.
@@ -94,19 +114,29 @@ class ComentarioController extends Controller{
     }
 
     /**
-     * Deletes an existing Comentario model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * Delete blog.
+     * @return string
+     * @throws NotFoundHttpException
      * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws StaleObjectException
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+    public function actionDelete(){ //borrar articulos
+        if(Yii::$app->request->post()){
+            $id_comentario = Html::encode($_POST["id_comentario"]);
+            if( (int) $id_comentario) {
+                $this->findModel($id_comentario)->delete();
+                return $this->redirect(["index"]);
+            }
+        }else{
+            return $this->redirect(["index"]);
+        }
+    }
+    public function actions(){
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
     }
 
     /**
