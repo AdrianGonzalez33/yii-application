@@ -12,19 +12,15 @@ $this->title = 'Lista de usuarios';
 <head>
 </head>
 <h3>Lista de Usuarios</h3>
-<div class="table-responsive">
-    <table class="table table-bordered">
+<div class="card my-4">
+    <table class="table table-striped table-bordered">
         <tr>
             <th>Id Usuario</th>
-            <th>contraseña</th>
             <th>email</th>
-            <th></th>
-            <th></th>
         </tr>
         <?php foreach($model as $row): ?>
         <tr>
             <td><?= $row->username ?></td>
-            <td><?= $row->auth_key ?></td>
             <td><?= $row->email ?></td>
         </tr>
         <?php endforeach ?>

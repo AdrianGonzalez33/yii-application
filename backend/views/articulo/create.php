@@ -30,12 +30,12 @@ $varCategoria = Categoria::find()->select('nombre_categoria')->distinct()->index
         <p><?= Html::button('Crear categoria',['value'=>Url::to('http://backend.test/categoria/create'),'class'=>'btn btn-success','id'=>'modalButton'])?> </p>
             <?php
                 Modal::begin([
-                        'header'=>'<h4>Categoria</h4>',
                         'id'=>'modal',
                         'size'=>'modal-lg',
                         //'clientOptions' => ['backdrop' => 'static', 'keyboard' => FALSE],
                 ]);
-                echo "<div id='modalContent'></div>";
+                echo "
+                       <div id='modalContent'></div>";
                 Modal::end();
             ?>
         </div>

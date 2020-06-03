@@ -15,6 +15,7 @@ $this->title = 'crear categoria';
 ?>
 <div class="form-group">
     <div><?= $form->field($model, 'nombre_categoria')->textInput(['id' => "categoria"])?></div>
+    <div><?= $form->field($model, 'imagen')->textInput()?></div>
     <div><input type="submit" value="Crear" class="btn btn-primary" data-target="modal">
         <input type="reset" value="Cancelar" class="btn btn-primary" data-dismiss="modal"></button>
     </div>

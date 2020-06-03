@@ -1,20 +1,27 @@
 <?php
+
+use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\Pjax;
 
+function compararObjetos($obj_a, $obj_b) {
+    return $obj_a->id - $obj_b->id;
+}
 /* @var $this yii\web\View */
-
+$id = (Yii::$app->user->identity);
+$user=\common\models\User::findIdentity($id);
+if($user !=null){
+    $user= $user->getId();
+}
+$notification= \dvamigos\Yii2\Notifications\Notification::findIdentity($id);
 $img = Url::to('@web/uploads/');
 $this->title = 'Blog';
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
-
 <body>
 <!--    </div>-->
     <!-- HEADER -->
@@ -24,7 +31,7 @@ $this->title = 'Blog';
         <div class="container" style="position:sticky">
             <!-- logo -->
             <div class="nav-menu pull-left">
-                <a href="http://backend.test/articulo/prueba" class="logo">
+                <a href="http://backend.test/articulo/index" class="logo">
                     <img src="<?=$img."../img/logo-rojo.svg"?>" class="logo-red" alt="" height="auto" width="150px">
                     <img src="<?=$img."../img/logo-blanco.svg"?>" class="logo-white" alt="" height="auto" width="150px">
                 </a>
@@ -33,19 +40,17 @@ $this->title = 'Blog';
 
             <!-- links -->
             <ul class="nav justify-content-lg-center pull-right">
-                <li><a href="#">Alquiler de coches</a></li>
-                <li><a href="#">Club Record go</a></li>
-                <li><a href="#">Busca tu reserva</a></li>
+                <li><a href="https://www.recordrentacar.com/es/">Alquiler de coches</a></li>
+                <li><a href="https://www.recordrentacar.com/es/club-record-go/">Club Record go</a></li>
+                <li><a href="https://www.recordrentacar.com/es/customerarea/find-booking/">Busca tu reserva</a></li>
             </ul>
             <!-- /search & aside toggle -->
         </div>
     </div>
-    <hr style="border:1px solid #e33531; border-radius: 5px;margin-top: 0px; margin-bottom: 0px;  margin-left: -100%; margin-right: -100%;">
+    <hr style="border:1px solid #e33531; border-radius: 5px; margin: 0 -100%;">
         <!-- /Top Nav -->
-
 </header>
 <!-- /HEADER -->
-
 <!-- SECCIÓN POPULARES -->
 <div class="section">
     <!-- container -->
@@ -74,11 +79,15 @@ $this->title = 'Blog';
                 '<div class="col-md-4 hot-post-right">'; //Los siguientes populares (hasta 3)
             }
             echo // información de los articulos
-            '<div class="post post-thumb">
-                <a class="post-img" href='.Url::toRoute(["articulo/post", "id_articulo"=>$populares[$i]->id_articulo]).'><img src='.$img.$populares[$i]->imagen.' alt=""></a>
-                <div class="post-body">
+            '<div class="post post-thumb">';
+                if($i==0){
+                    echo '<a class="post-img" href='.Url::toRoute(["articulo/post", "id_articulo"=>$populares[$i]->id_articulo]).'><img src='.$img.$populares[$i]->imagen.' width="300" height="450" alt="imagenes_populares"></a>';
+                }else{
+                    echo '<a class="post-img" href='.Url::toRoute(["articulo/post", "id_articulo"=>$populares[$i]->id_articulo]).'><img src='.$img.$populares[$i]->imagen.' width="300" height="222" alt="imagenes_populares"></a>';}
+                echo
+                '<div class="post-body">
                     <div class="post-category">
-                        <a href='.Url::toRoute(["articulo/category/", "categoria"=> $populares[$i]->categoria]).'>'.$populares[$i]->categoria.'</a>
+                        <a href='.Url::toRoute(["articulo/category/", "categoria"=> $populares[$i]->categoria, "numArticulos"=>1]).'>'.$populares[$i]->categoria.'</a>
                     </div>
                     <h3 class="post-title title-lg"><a href='.Url::toRoute(["articulo/post", "id_articulo"=>$populares[$i]->id_articulo]).'> '.$populares[$i]->titulo.' </a></h3>
                     <ul class="post-meta">
@@ -116,15 +125,16 @@ $this->title = 'Blog';
                     </div>
                     <!-- post -->
                     <?php
-                        $model2 = array_slice((array)$model, 0,4);
+                        $resultado = array_udiff($model, $populares, 'compararObjetos');
+                        $model2 = array_slice((array)$resultado, 0,4);
                      ?>
                     <?php foreach($model2 as $row): ?>
                     <div class="col-md-6">
                         <div class="post">
-                            <a class="post-img" href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo]) ?>"><img src=<?=$img.$row->imagen ?> alt=""></a>
+                            <a class="post-img" href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo]) ?>"><img src="<?=$img.$row->imagen ?>" width="300" height="200"alt="fotos_recientes"></a>
                             <div class="post-body">
                                 <div class="post-category">
-                                    <a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $row->categoria])?>"><?=$row->categoria ?></a>
+                                    <a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $row->categoria, "numArticulos"=>1])?>"><?=$row->categoria ?></a>
                                 </div>
                                 <h3 class="post-title"><a href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo])?>"><?=$row->titulo ?></a></h3>
                                 <?php
@@ -147,13 +157,11 @@ $this->title = 'Blog';
                     </div>
                     <?php endforeach ?>
                     <!-- /post -->
-
                     <div class="clearfix visible-md visible-lg"></div>
-
                 </div>
                 <!-- /row -->
 
-                <!-- row -->
+                <!-- row titulo categoria-->
                 <?php foreach ($articulosPorCategorias as $nombreCategoria => $articulos) {?>
                     <div class="row">
                         <div class="col-md-12">
@@ -163,13 +171,13 @@ $this->title = 'Blog';
                         </div>
                 <?php $model3 = array_slice((array) $articulos, 0,3);?>
                     <?php foreach($model3 as $row): ?>
-                    <!-- post -->
+                    <!-- post categorias-->
                     <div class="col-md-4">
                         <div class="post post-sm">
-                            <a class="post-img" href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo])?>"><img src=<?=$img.$row->imagen ?> alt=""></a>
+                            <a class="post-img" href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo])?>"><img src=<?=$img.$row->imagen ?> width="193.33" height="126"  alt="fotos_categoria"></a>
                             <div class="post-body">
                                 <div class="post-category">
-                                    <a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $row->categoria ]) ?>"><?=$row->categoria?></a>
+                                    <a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $row->categoria , "numArticulos"=>1]) ?>"><?=$row->categoria?></a>
                                 </div>
                                 <h3 class="post-title title-sm"><a href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo])?>"><?=$row->titulo?></a></h3>
                                 <ul class="post-meta">
@@ -180,20 +188,19 @@ $this->title = 'Blog';
                         </div>
                     </div>
                     <?php endforeach ?>
-                    <!-- /post -->
+                    <!-- /post categorias -->
                 </div>
-                <!-- /row -->
+                <!-- /row titulo categoria-->
                 <?php  }?>
-
             </div>
             <div class="col-md-4">
-                <!-- ad widget-->
+                <!-- Widget foto publicitaria -->
                 <div class="aside-widget text-center">
                     <a href="#" style="display: inline-block;margin: auto;">
-                        <img class="img-responsive" src="../../web/img/ad-3.jpg" alt="">
+                        <img src="https://dummyimage.com/600x400/000/fff" alt="placeholder image" class="img-fluid" />
                     </a>
                 </div>
-                <!-- /ad widget -->
+                <!-- /Widget foto publicitaria -->
 
                 <!-- social widget -->
                 <div class="aside-widget">
@@ -203,28 +210,27 @@ $this->title = 'Blog';
                     <div class="social-widget">
                         <ul>
                             <li>
-                                <a href="#" class="social-facebook">
+                                <a href="https://www.facebook.com/recordgo" class="social-facebook">
                                     <i class="fa fa-facebook"></i>
-                                    <span>21.2K<br>Followers</span>
+                                    <span>8.7K <br>Seguidores</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="social-twitter">
+                                <a href="https://twitter.com/recordgo" class="social-twitter">
                                     <i class="fa fa-twitter"></i>
-                                    <span>10.2K<br>Followers</span>
+                                    <span>2.2K<br>Seguidores</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="#" class="social-google-plus">
-                                    <i class="fa fa-google-plus"></i>
-                                    <span>5K<br>Followers</span>
+                                    <i class="fa fa-pinterest"></i>
+                                    <span>22.6K<br>Visitantes/mes</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <!-- /social widget -->
-
                 <!-- category widget -->
                 <div class="aside-widget">
                     <div class="section-title">
@@ -232,29 +238,41 @@ $this->title = 'Blog';
                     </div>
                     <div class="category-widget">
                         <ul>
-                            <li><a href="http://backend.test/articulo/prueba">Todos <span><?=$cantidadArticulos?></span></a></li>
+                            <li><a href="http://backend.test/articulo/index">Todos <span><?=$cantidadArticulos?></span></a></li>
                             <?php foreach($categorias as $nombreCategoria => $cantidad){?>
-                                <li><a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $nombreCategoria]) ?>"><?=$nombreCategoria?> <span><?= $cantidad ?> </span></a></li>
+                                <li><a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $nombreCategoria,  "numArticulos"=>1]) ?>"><?=$nombreCategoria?> <span><?= $cantidad ?> </span></a></li>
                             <?php }  ?>
                         </ul>
                     </div>
                 </div>
                 <!-- /category widget -->
 
-                <!-- newsletter widget -->
+                <!-- Suscripcion widget -->
                 <div class="aside-widget">
                     <div class="section-title">
-                        <h2 class="title">Newsletter</h2>
+                        <h2 class="title">Recibir notificaciones:</h2>
                     </div>
                     <div class="newsletter-widget">
-                        <form>
-                            <p>Nec feugiat nisl pretium fusce id velit ut tortor pretium.</p>
-                            <input class="input" name="newsletter" placeholder="Enter Your Email">
-                            <button class="primary-button">Subscribe</button>
-                        </form>
+                        <?php Pjax::begin(['id'=>'notificacion','enablePushState' => false]); ?>
+                        <?php if($notification == null){ ?>
+                            <?= $form =Html::beginForm(["articulo/notification"], 'post', ['data-pjax' => "", 'class' => 'form-inline']); ?>
+                            <p>Subscríbete para recibir notificaciones con las últimas noticias.</p>
+                            <?= Html::hiddenInput('id_user', $user)?>
+                            <button class="primary-button">Subscribirse</button>
+                            <?= Html::endForm() ?>
+
+                        <?php }else{ ?>
+                            <?= $form =Html::beginForm(["articulo/removenotification"], 'post', ['data-pjax' => "", 'class' => 'form-inline']); ?>
+                            <p>Desuscribirse para no recibir más notificaciones.</p>
+                            <?= Html::hiddenInput('id_user', $user)?>
+                            <button class="primary-button">Desuscribirse</button>
+                            <?= Html::endForm() ?>
+
+                        <?php } ?>
+                        <?php Pjax::end(); ?>
                     </div>
                 </div>
-                <!-- /newsletter widget -->
+                <!-- /Suscripcion widget -->
 
                 <!-- widget resto populares-->
                 <div class="aside-widget">
@@ -262,15 +280,15 @@ $this->title = 'Blog';
                         <h2 class="title">Articulos populares</h2>
                     </div>
                     <?php
-                    $restoPopulares = array_slice((array) $articulosPopulares, 3,sizeof($articulosPopulares));// límite de populares.
+                    $restoPopulares = array_slice((array) $articulosPopulares, 3, 4);// sizeof($articulosPopulares) --> si quieres el límite sea populares.
                     ?>
                     <?php foreach($restoPopulares as $row):?>
                     <!-- post -->
                     <div class="post post-widget">
-                        <a class="post-img" href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo]) ?>"><img src=<?=$img.$row->imagen ?> alt=""></a>
+                        <a class="post-img" href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo]) ?>"><img src=<?=$img.$row->imagen ?> width="130" height="86.7" alt="resto_populares"></a>
                         <div class="post-body">
                             <div class="post-category">
-                                <a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $row->categoria ]) ?>"><?=$row->categoria?></a>
+                                <a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $row->categoria,  "numArticulos"=>1 ]) ?>"><?=$row->categoria?></a>
                             </div>
                             <h3 class="post-title"><a href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo])?>"><?=$row->titulo?></a></h3>
                         </div>
@@ -279,6 +297,13 @@ $this->title = 'Blog';
                     <?php endforeach ?>
                 </div>
                 <!-- /widget resto populares-->
+                <!-- Ad widget -->
+                <div class="aside-widget text-left">
+                    <a href="#" style="display: inline-block;margin: auto;">
+                        <img src="https://dummyimage.com/300x450/000/fff" alt="placeholder image" class="img-fluid" />
+                    </a>
+                </div>
+                <!-- /Ad widget -->
             </div>
         </div>
         <!-- /row -->
@@ -286,7 +311,6 @@ $this->title = 'Blog';
     <!-- /container -->
 </div>
 <!-- /SECTION -->
-
 <!-- SECTION -->
 <div class="section">
     <!-- container -->
@@ -296,7 +320,7 @@ $this->title = 'Blog';
             <!-- ad -->
             <div class="col-md-12 section-row text-center">
                 <a href="#" style="display: inline-block;margin: auto;">
-                    <img class="img-responsive" src="./img/ad-2.jpg" alt="">
+                    <img src="https://dummyimage.com/720x90/000/fff" alt="placeholder image" class="img-fluid" />
                 </a>
             </div>
             <!-- /ad -->
@@ -307,23 +331,24 @@ $this->title = 'Blog';
 </div>
 <!-- /SECTION -->
 
-<!-- SECTION -->
+<!-- Resto de articulos -->
 <div class="section">
     <!-- container -->
     <div class="container">
         <!-- row -->
         <div class="row">
             <div class="col-md-8">
+                <?php Pjax::begin(); ?>
                 <?php
-                $model3 = array_slice((array) $model, 4,sizeof($model));// resto de articulos
+                $model3 = array_slice((array) $model, 4, $numArticulos);// resto de articulos
                 ?>
                 <?php foreach($model3 as $row): ?>
                 <!-- post -->
                 <div class="post post-row">
-                    <a class="post-img" href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo]) ?>"><img src=<?=$img.$row->imagen ?> alt=""></a>
+                    <a class="post-img" href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo]) ?>"><img src=<?=$img.$row->imagen ?> width="247.98" height="165.39"  alt="resto_articulos"></a>
                     <div class="post-body">
                         <div class="post-category">
-                            <a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $row->categoria ]) ?>"><?=$row->categoria?></a>
+                            <a href="<?= Url::toRoute(["articulo/category/", "categoria"=> $row->categoria ,"numArticulos"=>1]) ?>"><?=$row->categoria?></a>
                         </div>
                         <h3 class="post-title"><a href="<?= Url::toRoute(["articulo/post", "id_articulo"=>$row->id_articulo])?>"><?=$row->titulo?></a></h3></h3>
                         <ul class="post-meta">
@@ -346,40 +371,25 @@ $this->title = 'Blog';
                 <!-- /post -->
                 <?php endforeach ?>
                 <div class="section-row loadmore text-center">
-                    <a href="#" class="primary-button">Load More</a>
+                    <?php if($numArticulos+1 > sizeof($model)-4 || $numArticulos+1 == sizeof($model)-4){
+                        echo "<p></p>";
+                    }else{
+                        echo Html::a("Cargar Más", ['articulo/index','numArticulos' => $numArticulos+1], ['class' => 'btn btn-lg primary-button']);}
+                    ?>
                 </div>
             </div>
             <div class="col-md-4">
-                <!-- galery widget -->
-                <div class="aside-widget">
-                    <div class="section-title">
-                        <h2 class="title">Instagram</h2>
-                    </div>
-                    <div class="galery-widget">
-                        <ul>
-                            <li><a href="#"><img src="./img/galery-1.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="./img/galery-2.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="./img/galery-3.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="./img/galery-4.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="./img/galery-5.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="./img/galery-6.jpg" alt=""></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /galery widget -->
-
-                <!-- Ad widget -->
-                <div class="aside-widget text-center">
-                    <a href="#" style="display: inline-block;margin: auto;">
-                        <img class="img-responsive" src="./img/ad-1.jpg" alt="">
-                    </a>
-                </div>
-                <!-- /Ad widget -->
+            <?php Pjax::end(); ?>
             </div>
         </div>
         <!-- /row -->
     </div>
     <!-- /container -->
 </div>
-<!-- /SECTION -->
+<!-- /FIN resto de articulos -->
 </body>
+<script>
+    $("#my_tab_id").click(function() {
+        $.pjax.reload({container: '#notification', async: false});
+    });
+</script>

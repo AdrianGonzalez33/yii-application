@@ -2,7 +2,6 @@
 namespace backend\controllers;
 
 use common\models\LoginForm;
-use common\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;

@@ -21,7 +21,9 @@
         "ext-json": "*",
         "coderius/yii2-pell-widget": "~1.0",
         "vlaim/yii2-file-upload": "dev-master",
-      "ext-imagick": "*"
+		"himiklab/yii2-recaptcha-widget" : "*",
+        "dvamigos/yii2-notifications": "*"
+		
     },
     "require-dev": {
 		"yiisoft/yii2-debug": "~2.1.0",

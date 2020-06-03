@@ -21,24 +21,27 @@ use frontend\models\ContactForm;
  */
 class SiteController extends Controller{
     /**
-     * {@inheritdoc}
+     * Displays redirige a la pagina principal.
+     *
+     * @return string
      */
+    public function actionIndex(){
+        return $this->redirect(["articulo/index"]);
+    }
     public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'only' => ['login', 'logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'signup','about','contact'], //solo permitidos sin logear
                         'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout',  'upload',], //permitidos logeados
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'actions' => ['login', 'signup'], //a todos, sin logear
+                        'roles' => ['?'],
                     ],
                     [
                         'allow' => true,
+                        'actions' =>  ['logout'], //permitidos logeados
                         'roles' => ['@'],
                     ],
                 ],
@@ -145,10 +148,9 @@ class SiteController extends Controller{
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            Yii::$app->session->setFlash('Éxito', 'Gracias por registrarte. Verifique su bandeja de entrada para el correo electrónico de verificación');
             return $this->goHome();
         }
-
         return $this->render('signup', ['model' => $model,]);
     }
 
@@ -162,11 +164,11 @@ class SiteController extends Controller{
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                Yii::$app->session->setFlash('Éxito', 'Revise su correo electrónico para obtener más instrucciones.');
 
                 return $this->goHome();
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('Error', 'Lo sentimos, no podemos restablecer la contraseña en la dirección de correo electrónico proporcionada.');
             }
         }
 
@@ -191,7 +193,7 @@ class SiteController extends Controller{
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
+            Yii::$app->session->setFlash('Éxito', 'Nueva contraseña guardada.');
 
             return $this->goHome();
         }
@@ -217,12 +219,12 @@ class SiteController extends Controller{
         }
         if ($user = $model->verifyEmail()) {
             if (Yii::$app->user->login($user)) {
-                Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
+                Yii::$app->session->setFlash('Éxito', '¡Tu correo ha sido confirmado!');
                 return $this->goHome();
             }
         }
 
-        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
+        Yii::$app->session->setFlash('Error', 'Lo sentimos, no podemos verificar su cuenta con el token proporcionado.');
         return $this->goHome();
     }
 
@@ -236,10 +238,10 @@ class SiteController extends Controller{
         $model = new ResendVerificationEmailForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                Yii::$app->session->setFlash('Éxito', 'Revise su correo electrónico para obtener más instrucciones.');
                 return $this->goHome();
             }
-            Yii::$app->session->setFlash('error', 'Sorry, we are unable to resend verification email for the provided email address.');
+            Yii::$app->session->setFlash('Error',"Lo sentimos, no podemos reenviar el correo electrónico de verificación en la dirección de correo electrónico proporcionada.");
         }
 
         return $this->render('resendVerificationEmail', [

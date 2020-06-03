@@ -39,6 +39,7 @@ $this->title = 'Lista de categorias';
         <tr>
             <th>Id categoria</th>
             <th>Nombre categoria</th>
+            <th>Imagen</th>
             <th></th>
             <th></th>
         </tr>
@@ -48,6 +49,7 @@ $this->title = 'Lista de categorias';
             <tr>
                 <td><?= $row->id_categoria ?></td>
                 <td><?= $row->nombre_categoria ?></td>
+                <td><?= $row->imagen ?></td>
 
                 <!--editar y eliminar categorias-->
                 <td><a href="<?= Url::toRoute(["categoria/edit/", "id" => $row->id_categoria]) ?>">Editar</a></td>

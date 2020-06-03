@@ -19,6 +19,8 @@ use yii\data\ActiveDataProvider;
  * @property int|null $modificado
  */
 class Comentario extends \yii\db\ActiveRecord {
+    public $reCaptcha;
+
     /**
      * {@inheritdoc}
      */
@@ -39,6 +41,9 @@ class Comentario extends \yii\db\ActiveRecord {
             [['id_articulo', 'id_user', 'contenido_comentario'], 'required'],
             [['id_comentario', 'id_articulo', 'id_user', 'id_padre', 'creado', 'modificado'], 'integer'],
             [['contenido_comentario'], 'safe'],
+            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator2::className(),
+                'secret' => '6LcFb-0UAAAAAGTEZRv30i9uXAJ2DsrkyUyQ7SSv', // unnecessary if reСaptcha is already configured
+                'uncheckedMessage' => 'Please confirm that you are not a bot.'],
         ];
     }
 

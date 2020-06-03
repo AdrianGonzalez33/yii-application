@@ -48,7 +48,6 @@ class Articulo extends ActiveRecord{
             [['popular'], 'boolean'],
             [['archivo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg','maxSize' => 1024*1024*10, 'tooBig' => 'El límite son 10MB'],
             [['titulo', 'contenido', 'autor', 'archivo', 'categoria'], 'safe'],
-
         ];
     }
     /**
@@ -74,9 +73,61 @@ class Articulo extends ActiveRecord{
     public function getId(){
         return $this->getPrimaryKey();
     }
+
     /**
-     *
+     * @property String $titulo
      */
+    public function getTitulo(){
+        return $this->titulo;
+    }
+
+    /**
+     * @property String $contenido
+     */
+    public function getContenido(){
+        return $this->contenido;
+    }
+
+    /**
+     * @property String $autor
+     */
+    public function getAutor(){
+        return $this->autor;
+    }
+
+    /**
+     * @property String $imagen
+     */
+    public function getImagen(){
+        return $this->imagen;
+    }
+
+    /**
+     * @property String $categoria
+     */
+    public function getCategoria(){
+        return $this->categoria;
+    }
+
+    /**
+     * @property boolean $popular
+     */
+    public function getPopular(){
+        return $this->popular;
+    }
+
+    /**
+     * @property int $creado
+     */
+    public function getCreado(){
+        return $this->creado;
+    }
+    /**
+     * @property int $modificado
+     */
+    public function getModificado(){
+        return $this->modificado;
+    }
 
     public function scenarios(){
         // bypass scenarios() implementation in the parent class

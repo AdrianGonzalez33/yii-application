@@ -6,6 +6,7 @@ use app\models\Buscador;
 use Yii;
 use common\models\Comentario;
 use yii\db\StaleObjectException;
+use yii\filters\AccessControl;
 use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -15,20 +16,6 @@ use yii\filters\VerbFilter;
  * ComentarioController implements the CRUD actions for Comentario model.
  */
 class ComentarioController extends Controller{
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors(){
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * Lists all Comentario models.
      * @return mixed
@@ -84,6 +71,7 @@ class ComentarioController extends Controller{
             $model->id_articulo = Html::encode($_POST["id_articulo"]);
             $model->id_user = Html::encode($_POST["id_user"]);
             $model->contenido_comentario = Html::encode($_POST["contenido_comentario"]);
+            $model->reCaptcha = Html::encode($_POST["reCaptcha"]);
             $model->creado = time();
             if($model->save()){
                 $enviado = true;}
@@ -152,5 +140,33 @@ class ComentarioController extends Controller{
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => [""], //solo permitidos sin logear
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['index' ], //permitidos logeados
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
     }
 }

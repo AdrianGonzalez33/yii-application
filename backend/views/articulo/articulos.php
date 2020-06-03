@@ -8,7 +8,9 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'Lista de Articulos';
 ?>
-
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
 <div class="container">
     <!--buscador -->
     <?php $formularioBusqueda = ActiveForm::begin([
@@ -16,13 +18,12 @@ $this->title = 'Lista de Articulos';
         'enableClientValidation' => true,
         'action' => Url::toRoute("articulo/articulos"),
     ]);
-
     ?>
 
     <h3>Lista de Artículos</h3>
     <!--buscador -->
         <div class="card my-4">
-            <h5 class="card-header">Search</h5>
+            <h5 class="card-header">Buscar</h5>
             <div class="card-body">
                 <div class="input-group">
                     <?= $formularioBusqueda->field($form, "busqueda",['errorOptions'=>['tag'=>false]])->textInput(['class' => 'form-control','style' => 'background-color: #fff;','placeholder'=>"Introduce aquí tu búsqueda:"])->label(false)?>
@@ -43,8 +44,9 @@ $this->title = 'Lista de Articulos';
             <th>autor</th>
             <th>contenido</th>
             <th>popular</th>
-            <th></th>
-            <th></th>
+            <th class='text-center'>Enlace</th>
+            <th class='text-center'>Editar</th>
+            <th class='text-center'>Eliminar</th>
         </tr>
 
         <!--setea los datos-->
@@ -70,22 +72,25 @@ $this->title = 'Lista de Articulos';
                 <?= Html::hiddenInput('checkId')?>
                 <?php
                 if($row->popular) {
-                    echo"<td><input type='checkbox' id='myCheck' value='$row->id_articulo' onclick='checkUpdate(this)' checked ></td>";
+                    echo"<td class='text-center'><input type='checkbox' id='myCheck' value='$row->id_articulo' onclick='checkUpdate(this)' checked ></td>";
                 }else {
-                    echo"<td><input type='checkbox' id='myCheck' value='$row->id_articulo' onclick='checkUpdate(this)' ></td>";
+                    echo"<td class='text-center'><input type='checkbox' id='myCheck' value='$row->id_articulo' onclick='checkUpdate(this)' ></td>";
                 }
                 ?>
                 <?= Html::endForm() ?>
 
+                <!--enlaces -->
+                <td class="text-center"><a href="http://backend.test/articulo/post/<?= $row->id_articulo ?>" id="#{item.name}" class="fa fa-eye" ></td>
+
                 <!--editar y eliminar articulos-->
-                <td><a href="<?= Url::toRoute(["articulo/edit/", "id" => $row->id_articulo]) ?>">Editar</a></td>
-                <td><a href="#" data-toggle="modal" data-target="#id_articulo<?= $row->id_articulo ?>">Eliminar</a>
+                <td  class='text-center'><a href="<?= Url::toRoute(["articulo/edit/", "id" => $row->id_articulo]) ?>" id="#{item.name}" class="fa fa-edit" ></td>
+                <td  class='text-center'><a href="#" data-toggle="modal" data-target="#id_articulo<?= $row->id_articulo ?>" id="#{item.name}" class="glyphicon glyphicon-trash"></a>
                     <div class="modal fade" role="dialog" aria-hidden="true" id="id_articulo<?= $row->id_articulo ?>">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                     <h4 class="modal-title">Eliminar articulo</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                 </div>
                                 <div class="modal-body">
                                     <p>¿Realmente deseas eliminar al articulo con id <?= $row->id_articulo ?>?</p>
@@ -94,7 +99,7 @@ $this->title = 'Lista de Articulos';
                                     <?= Html::beginForm(Url::toRoute("articulo/delete"), "DELETE") ?>
                                     <input type="hidden" name="id_articulo" value="<?= $row->id_articulo ?>">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                    <button type="submit" class="btn btn-primary">Eliminar</button>
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
                                     <?= Html::endForm() ?>
                                 </div>
                             </div><!-- /.modal-content -->

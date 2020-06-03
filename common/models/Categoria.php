@@ -5,18 +5,20 @@ namespace common\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "categoria".
  *
  * @property int $id_categoria
  * @property string $nombre_categoria
+ * @property string $imagen
  */
-class Categoria extends \yii\db\ActiveRecord {
+class Categoria extends ActiveRecord {
     /**
      * {@inheritdoc}
      */
-    public static function tableName() {
+    public static function tableName(){
         return 'categoria';
     }
     public static function getDb(){
@@ -29,9 +31,9 @@ class Categoria extends \yii\db\ActiveRecord {
 
     public function rules() {
         return [
-            [['nombre_categoria'], 'required'],
+            [['nombre_categoria','imagen'], 'required'],
             [['id_categoria'], 'integer'],
-            [['nombre_categoria'], 'safe'],
+            [['nombre_categoria','imagen'], 'safe'],
         ];
     }
 
@@ -42,6 +44,7 @@ class Categoria extends \yii\db\ActiveRecord {
         return [
             'id_categoria' => 'Id categoria',
             'nombre_categoria' => 'Nombre de la categoria',
+            'imagen'=> 'Imagen URL',
         ];
     }
     /**
@@ -51,8 +54,19 @@ class Categoria extends \yii\db\ActiveRecord {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
+    /**
+     * @property int $id_categoria
+     */
+    public function getId(){
+        return $this->getPrimaryKey();
+    }
+
     public function getNombreCategoria(){
         return $this->nombre_categoria;
+    }
+
+    public function getImagen(){
+        return $this->imagen;
     }
     /**
      * Creates data provider instance with search query applied
@@ -62,12 +76,11 @@ class Categoria extends \yii\db\ActiveRecord {
      * @return ActiveDataProvider
      */
     public function search($params){
-        $query = Comentario::find();
+        $query = Categoria::find();
 
         // add conditions that should always apply here
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+        $dataProvider = new ActiveDataProvider(['query' => $query,
         ]);
 
         $this->load($params);
@@ -77,13 +90,15 @@ class Categoria extends \yii\db\ActiveRecord {
             // $query->where('0=1');
             return $dataProvider;
         }
-
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_comentario' => $this->id_categoria,
+            'id_categoria' => $this->id_categoria,
         ]);
 
-        $query->andFilterWhere(['like', 'contenido_comentario', $this->nombre_categoria]);
+
+        // grid filtering conditions
+        $query->andFilterWhere(['like', 'nombre_categoria', $this->nombre_categoria])
+            ->andFilterWhere(['like', 'imagen', $this->imagen]);
 
         return $dataProvider;
     }

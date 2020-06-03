@@ -14,6 +14,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 
+
 class CategoriaController extends Controller{
 
     protected function findModel($id)    {
@@ -64,7 +65,6 @@ class CategoriaController extends Controller{
             }else{
                 echo 0;
             }
-            //$this->redirect("../articulo/create");
         }else {
             return $this->renderAjax('create', ['model' => $model]);
         }
@@ -88,6 +88,24 @@ class CategoriaController extends Controller{
             return $this->redirect(["index"]);
         }
     }
+    public function actionEdit(){
+        $form = new Buscador();
+        $search = null;
+        if(Yii::$app->request->get()){
+            $id_categoria =Html::encode($_GET["id"]);
+            $model = $this->findModel($id_categoria);
+            if ($model->load(Yii::$app->request->post())) {
+                if ($model->validate()) {
+                    $model->save();
+                    $table = $model->find()->all();
+                    return $this->render("index", ["model" => $table, "form" => $form, "search" => $search]);
+                } else {
+                    $model->getErrors();
+                }
+            }
+        }
+        return $this->render("edit", ['model' => $model]);
+    }
     public function actions(){
         return [
             'error' => [
@@ -105,11 +123,11 @@ class CategoriaController extends Controller{
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => [], //solo permitidos sin logear
+                        'actions' => [""], //solo permitidos sin logear
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['create', 'index'], //permitidos logeados
+                        'actions' => ['index','create' ], //permitidos logeados
                         'allow' => true,
                         'roles' => ['@'],
                     ],
